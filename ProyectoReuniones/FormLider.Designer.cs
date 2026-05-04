@@ -31,29 +31,32 @@
             this.components = new System.ComponentModel.Container();
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnCerrarSesion = new Guna.UI2.WinForms.Guna2Button();
+            this.btnVerReuniones = new Guna.UI2.WinForms.Guna2Button();
+            this.btnRegistrar = new Guna.UI2.WinForms.Guna2Button();
             this.guna2PictureBox1 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.lblBienvenida = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.lblSemillero = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.grpCalendario = new System.Windows.Forms.GroupBox();
-            this.calendario = new System.Windows.Forms.MonthCalendar();
-            this.grpHoras = new System.Windows.Forms.GroupBox();
-            this.lstHoras = new System.Windows.Forms.ListBox();
-            this.grpInvestigadores = new System.Windows.Forms.GroupBox();
-            this.lstInvestigadores = new System.Windows.Forms.CheckedListBox();
-            this.lblMotivo = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.txtMotivo = new Guna.UI2.WinForms.Guna2TextBox();
-            this.btnGuardar = new Guna.UI2.WinForms.Guna2Button();
-            this.btnRegistrar = new Guna.UI2.WinForms.Guna2Button();
-            this.btnVerReuniones = new Guna.UI2.WinForms.Guna2Button();
-            this.btnCerrarSesion = new Guna.UI2.WinForms.Guna2Button();
             this.btnlimpiar = new Guna.UI2.WinForms.Guna2Button();
+            this.btnGuardar = new Guna.UI2.WinForms.Guna2Button();
+            this.txtMotivo = new Guna.UI2.WinForms.Guna2TextBox();
+            this.lstInvestigadores = new System.Windows.Forms.CheckedListBox();
+            this.lstHoras = new System.Windows.Forms.ListBox();
+            this.calendario = new System.Windows.Forms.MonthCalendar();
+            this.cardFecha = new Guna.UI2.WinForms.Guna2ShadowPanel();
+            this.lblTitutloFecha = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.cardHoras = new Guna.UI2.WinForms.Guna2ShadowPanel();
+            this.lblHorasDisponibles = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.cardInvestigadores = new Guna.UI2.WinForms.Guna2ShadowPanel();
+            this.lblInvestigador = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.cardMotivo = new Guna.UI2.WinForms.Guna2ShadowPanel();
+            this.lblMotivo = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            this.grpCalendario.SuspendLayout();
-            this.grpHoras.SuspendLayout();
-            this.grpInvestigadores.SuspendLayout();
+            this.cardFecha.SuspendLayout();
+            this.cardHoras.SuspendLayout();
+            this.cardInvestigadores.SuspendLayout();
+            this.cardMotivo.SuspendLayout();
             this.SuspendLayout();
             // 
             // guna2BorderlessForm1
@@ -70,17 +73,69 @@
             this.guna2Panel1.Controls.Add(this.btnRegistrar);
             this.guna2Panel1.Controls.Add(this.guna2PictureBox1);
             this.guna2Panel1.Location = new System.Drawing.Point(0, 0);
+            this.guna2Panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(211, 678);
+            this.guna2Panel1.Size = new System.Drawing.Size(188, 747);
             this.guna2Panel1.TabIndex = 0;
+            // 
+            // btnCerrarSesion
+            // 
+            this.btnCerrarSesion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnCerrarSesion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnCerrarSesion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnCerrarSesion.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnCerrarSesion.FillColor = System.Drawing.Color.Red;
+            this.btnCerrarSesion.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnCerrarSesion.ForeColor = System.Drawing.Color.White;
+            this.btnCerrarSesion.Location = new System.Drawing.Point(0, 647);
+            this.btnCerrarSesion.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnCerrarSesion.Name = "btnCerrarSesion";
+            this.btnCerrarSesion.Size = new System.Drawing.Size(188, 36);
+            this.btnCerrarSesion.TabIndex = 11;
+            this.btnCerrarSesion.Text = "Cerrar Sesion";
+            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
+            // 
+            // btnVerReuniones
+            // 
+            this.btnVerReuniones.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnVerReuniones.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnVerReuniones.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnVerReuniones.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnVerReuniones.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnVerReuniones.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnVerReuniones.ForeColor = System.Drawing.Color.White;
+            this.btnVerReuniones.Location = new System.Drawing.Point(0, 301);
+            this.btnVerReuniones.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnVerReuniones.Name = "btnVerReuniones";
+            this.btnVerReuniones.Size = new System.Drawing.Size(188, 36);
+            this.btnVerReuniones.TabIndex = 10;
+            this.btnVerReuniones.Text = "Ver mis reuniones";
+            this.btnVerReuniones.Click += new System.EventHandler(this.btnVerReuniones_Click);
+            // 
+            // btnRegistrar
+            // 
+            this.btnRegistrar.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnRegistrar.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnRegistrar.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnRegistrar.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnRegistrar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnRegistrar.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnRegistrar.ForeColor = System.Drawing.Color.White;
+            this.btnRegistrar.Location = new System.Drawing.Point(0, 172);
+            this.btnRegistrar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnRegistrar.Name = "btnRegistrar";
+            this.btnRegistrar.Size = new System.Drawing.Size(188, 36);
+            this.btnRegistrar.TabIndex = 9;
+            this.btnRegistrar.Text = "Registrar Reunión";
             // 
             // guna2PictureBox1
             // 
             this.guna2PictureBox1.Image = global::ProyectoReuniones.Properties.Resources.Proyecto_imagen;
             this.guna2PictureBox1.ImageRotate = 0F;
             this.guna2PictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.guna2PictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.guna2PictureBox1.Name = "guna2PictureBox1";
-            this.guna2PictureBox1.Size = new System.Drawing.Size(211, 151);
+            this.guna2PictureBox1.Size = new System.Drawing.Size(188, 121);
             this.guna2PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.guna2PictureBox1.TabIndex = 0;
             this.guna2PictureBox1.TabStop = false;
@@ -90,9 +145,10 @@
             this.lblBienvenida.AutoSize = false;
             this.lblBienvenida.BackColor = System.Drawing.Color.Transparent;
             this.lblBienvenida.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBienvenida.Location = new System.Drawing.Point(217, 12);
+            this.lblBienvenida.Location = new System.Drawing.Point(193, 10);
+            this.lblBienvenida.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lblBienvenida.Name = "lblBienvenida";
-            this.lblBienvenida.Size = new System.Drawing.Size(523, 36);
+            this.lblBienvenida.Size = new System.Drawing.Size(465, 29);
             this.lblBienvenida.TabIndex = 1;
             this.lblBienvenida.Text = "Bienvenido,";
             // 
@@ -100,94 +156,46 @@
             // 
             this.lblSemillero.BackColor = System.Drawing.Color.Transparent;
             this.lblSemillero.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSemillero.Location = new System.Drawing.Point(2, 13);
+            this.lblSemillero.Location = new System.Drawing.Point(209, 55);
+            this.lblSemillero.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lblSemillero.Name = "lblSemillero";
-            this.lblSemillero.Size = new System.Drawing.Size(111, 28);
+            this.lblSemillero.Size = new System.Drawing.Size(92, 24);
             this.lblSemillero.TabIndex = 2;
             this.lblSemillero.Text = "Semillero: ";
             // 
-            // groupBox1
+            // btnlimpiar
             // 
-            this.groupBox1.Controls.Add(this.btnlimpiar);
-            this.groupBox1.Controls.Add(this.btnGuardar);
-            this.groupBox1.Controls.Add(this.txtMotivo);
-            this.groupBox1.Controls.Add(this.lblMotivo);
-            this.groupBox1.Controls.Add(this.grpInvestigadores);
-            this.groupBox1.Controls.Add(this.grpHoras);
-            this.groupBox1.Controls.Add(this.grpCalendario);
-            this.groupBox1.Controls.Add(this.lblSemillero);
-            this.groupBox1.Location = new System.Drawing.Point(217, 54);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(862, 610);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
+            this.btnlimpiar.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnlimpiar.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnlimpiar.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnlimpiar.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnlimpiar.FillColor = System.Drawing.Color.White;
+            this.btnlimpiar.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnlimpiar.ForeColor = System.Drawing.Color.Black;
+            this.btnlimpiar.Location = new System.Drawing.Point(857, 661);
+            this.btnlimpiar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnlimpiar.Name = "btnlimpiar";
+            this.btnlimpiar.Size = new System.Drawing.Size(160, 36);
+            this.btnlimpiar.TabIndex = 9;
+            this.btnlimpiar.Text = "Limpiar campos";
+            this.btnlimpiar.Click += new System.EventHandler(this.btnlimpiar_Click);
             // 
-            // grpCalendario
+            // btnGuardar
             // 
-            this.grpCalendario.Controls.Add(this.calendario);
-            this.grpCalendario.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grpCalendario.Location = new System.Drawing.Point(6, 51);
-            this.grpCalendario.Name = "grpCalendario";
-            this.grpCalendario.Size = new System.Drawing.Size(270, 288);
-            this.grpCalendario.TabIndex = 3;
-            this.grpCalendario.TabStop = false;
-            this.grpCalendario.Text = "Selecciona una fecha";
-            // 
-            // calendario
-            // 
-            this.calendario.Location = new System.Drawing.Point(6, 18);
-            this.calendario.Name = "calendario";
-            this.calendario.TabIndex = 0;
-            this.calendario.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.calendario_DateChanged);
-            // 
-            // grpHoras
-            // 
-            this.grpHoras.Controls.Add(this.lstHoras);
-            this.grpHoras.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grpHoras.Location = new System.Drawing.Point(282, 51);
-            this.grpHoras.Name = "grpHoras";
-            this.grpHoras.Size = new System.Drawing.Size(270, 288);
-            this.grpHoras.TabIndex = 4;
-            this.grpHoras.TabStop = false;
-            this.grpHoras.Text = "Horas disponibles";
-            // 
-            // lstHoras
-            // 
-            this.lstHoras.FormattingEnabled = true;
-            this.lstHoras.ItemHeight = 20;
-            this.lstHoras.Location = new System.Drawing.Point(6, 34);
-            this.lstHoras.Name = "lstHoras";
-            this.lstHoras.Size = new System.Drawing.Size(256, 244);
-            this.lstHoras.TabIndex = 0;
-            // 
-            // grpInvestigadores
-            // 
-            this.grpInvestigadores.Controls.Add(this.lstInvestigadores);
-            this.grpInvestigadores.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grpInvestigadores.Location = new System.Drawing.Point(558, 51);
-            this.grpInvestigadores.Name = "grpInvestigadores";
-            this.grpInvestigadores.Size = new System.Drawing.Size(298, 288);
-            this.grpInvestigadores.TabIndex = 5;
-            this.grpInvestigadores.TabStop = false;
-            this.grpInvestigadores.Text = "Seleccionar investigadores";
-            // 
-            // lstInvestigadores
-            // 
-            this.lstInvestigadores.FormattingEnabled = true;
-            this.lstInvestigadores.Location = new System.Drawing.Point(6, 25);
-            this.lstInvestigadores.Name = "lstInvestigadores";
-            this.lstInvestigadores.Size = new System.Drawing.Size(286, 257);
-            this.lstInvestigadores.TabIndex = 0;
-            // 
-            // lblMotivo
-            // 
-            this.lblMotivo.BackColor = System.Drawing.Color.Transparent;
-            this.lblMotivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMotivo.Location = new System.Drawing.Point(12, 345);
-            this.lblMotivo.Name = "lblMotivo";
-            this.lblMotivo.Size = new System.Drawing.Size(169, 22);
-            this.lblMotivo.TabIndex = 6;
-            this.lblMotivo.Text = "Motivo de la reunión:";
+            this.btnGuardar.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnGuardar.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnGuardar.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnGuardar.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnGuardar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnGuardar.ForeColor = System.Drawing.Color.White;
+            this.btnGuardar.Location = new System.Drawing.Point(1053, 661);
+            this.btnGuardar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(160, 36);
+            this.btnGuardar.TabIndex = 8;
+            this.btnGuardar.Text = "Guardar Reunión";
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // txtMotivo
             // 
@@ -200,112 +208,163 @@
             this.txtMotivo.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtMotivo.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtMotivo.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtMotivo.Location = new System.Drawing.Point(12, 374);
-            this.txtMotivo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtMotivo.Location = new System.Drawing.Point(18, 67);
+            this.txtMotivo.Margin = new System.Windows.Forms.Padding(4);
             this.txtMotivo.Multiline = true;
             this.txtMotivo.Name = "txtMotivo";
             this.txtMotivo.PlaceholderText = "";
             this.txtMotivo.SelectedText = "";
-            this.txtMotivo.Size = new System.Drawing.Size(356, 215);
+            this.txtMotivo.Size = new System.Drawing.Size(965, 111);
             this.txtMotivo.TabIndex = 7;
             // 
-            // btnGuardar
+            // lstInvestigadores
             // 
-            this.btnGuardar.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnGuardar.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnGuardar.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnGuardar.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnGuardar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnGuardar.ForeColor = System.Drawing.Color.White;
-            this.btnGuardar.Location = new System.Drawing.Point(425, 544);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(180, 45);
-            this.btnGuardar.TabIndex = 8;
-            this.btnGuardar.Text = "Guardar Reunión";
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
+            this.lstInvestigadores.FormattingEnabled = true;
+            this.lstInvestigadores.Location = new System.Drawing.Point(23, 68);
+            this.lstInvestigadores.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.lstInvestigadores.Name = "lstInvestigadores";
+            this.lstInvestigadores.Size = new System.Drawing.Size(269, 208);
+            this.lstInvestigadores.TabIndex = 0;
             // 
-            // btnRegistrar
+            // lstHoras
             // 
-            this.btnRegistrar.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnRegistrar.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnRegistrar.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnRegistrar.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnRegistrar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnRegistrar.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnRegistrar.ForeColor = System.Drawing.Color.White;
-            this.btnRegistrar.Location = new System.Drawing.Point(0, 215);
-            this.btnRegistrar.Name = "btnRegistrar";
-            this.btnRegistrar.Size = new System.Drawing.Size(211, 45);
-            this.btnRegistrar.TabIndex = 9;
-            this.btnRegistrar.Text = "Registrar Reunión";
+            this.lstHoras.FormattingEnabled = true;
+            this.lstHoras.ItemHeight = 16;
+            this.lstHoras.Location = new System.Drawing.Point(19, 64);
+            this.lstHoras.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.lstHoras.Name = "lstHoras";
+            this.lstHoras.Size = new System.Drawing.Size(269, 212);
+            this.lstHoras.TabIndex = 0;
+            this.lstHoras.SelectedIndexChanged += new System.EventHandler(this.lstHoras_SelectedIndexChanged);
             // 
-            // btnVerReuniones
+            // calendario
             // 
-            this.btnVerReuniones.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnVerReuniones.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnVerReuniones.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnVerReuniones.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnVerReuniones.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnVerReuniones.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnVerReuniones.ForeColor = System.Drawing.Color.White;
-            this.btnVerReuniones.Location = new System.Drawing.Point(0, 376);
-            this.btnVerReuniones.Name = "btnVerReuniones";
-            this.btnVerReuniones.Size = new System.Drawing.Size(211, 45);
-            this.btnVerReuniones.TabIndex = 10;
-            this.btnVerReuniones.Text = "Ver mis reuniones";
+            this.calendario.Location = new System.Drawing.Point(18, 64);
+            this.calendario.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.calendario.Name = "calendario";
+            this.calendario.TabIndex = 0;
+            this.calendario.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.calendario_DateChanged);
             // 
-            // btnCerrarSesion
+            // cardFecha
             // 
-            this.btnCerrarSesion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnCerrarSesion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnCerrarSesion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnCerrarSesion.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnCerrarSesion.FillColor = System.Drawing.Color.Red;
-            this.btnCerrarSesion.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnCerrarSesion.ForeColor = System.Drawing.Color.White;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(0, 570);
-            this.btnCerrarSesion.Name = "btnCerrarSesion";
-            this.btnCerrarSesion.Size = new System.Drawing.Size(211, 45);
-            this.btnCerrarSesion.TabIndex = 11;
-            this.btnCerrarSesion.Text = "Cerrar Sesion";
-            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
+            this.cardFecha.BackColor = System.Drawing.Color.Transparent;
+            this.cardFecha.Controls.Add(this.lblTitutloFecha);
+            this.cardFecha.Controls.Add(this.calendario);
+            this.cardFecha.FillColor = System.Drawing.Color.White;
+            this.cardFecha.Location = new System.Drawing.Point(209, 84);
+            this.cardFecha.Name = "cardFecha";
+            this.cardFecha.ShadowColor = System.Drawing.Color.Black;
+            this.cardFecha.Size = new System.Drawing.Size(313, 302);
+            this.cardFecha.TabIndex = 10;
             // 
-            // btnlimpiar
+            // lblTitutloFecha
             // 
-            this.btnlimpiar.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnlimpiar.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnlimpiar.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnlimpiar.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnlimpiar.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnlimpiar.ForeColor = System.Drawing.Color.White;
-            this.btnlimpiar.Location = new System.Drawing.Point(648, 544);
-            this.btnlimpiar.Name = "btnlimpiar";
-            this.btnlimpiar.Size = new System.Drawing.Size(180, 45);
-            this.btnlimpiar.TabIndex = 9;
-            this.btnlimpiar.Text = "Limpiar campos";
-            this.btnlimpiar.Click += new System.EventHandler(this.btnlimpiar_Click);
+            this.lblTitutloFecha.BackColor = System.Drawing.Color.Transparent;
+            this.lblTitutloFecha.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitutloFecha.Location = new System.Drawing.Point(39, 15);
+            this.lblTitutloFecha.Name = "lblTitutloFecha";
+            this.lblTitutloFecha.Size = new System.Drawing.Size(141, 22);
+            this.lblTitutloFecha.TabIndex = 1;
+            this.lblTitutloFecha.Text = "Selecionar fecha";
+            // 
+            // cardHoras
+            // 
+            this.cardHoras.BackColor = System.Drawing.Color.Transparent;
+            this.cardHoras.Controls.Add(this.lblHorasDisponibles);
+            this.cardHoras.Controls.Add(this.lstHoras);
+            this.cardHoras.FillColor = System.Drawing.Color.White;
+            this.cardHoras.Location = new System.Drawing.Point(557, 84);
+            this.cardHoras.Name = "cardHoras";
+            this.cardHoras.ShadowColor = System.Drawing.Color.Black;
+            this.cardHoras.Size = new System.Drawing.Size(313, 302);
+            this.cardHoras.TabIndex = 11;
+            // 
+            // lblHorasDisponibles
+            // 
+            this.lblHorasDisponibles.BackColor = System.Drawing.Color.Transparent;
+            this.lblHorasDisponibles.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHorasDisponibles.Location = new System.Drawing.Point(19, 15);
+            this.lblHorasDisponibles.Name = "lblHorasDisponibles";
+            this.lblHorasDisponibles.Size = new System.Drawing.Size(152, 22);
+            this.lblHorasDisponibles.TabIndex = 2;
+            this.lblHorasDisponibles.Text = "Horas disponibles";
+            this.lblHorasDisponibles.Click += new System.EventHandler(this.guna2HtmlLabel2_Click);
+            // 
+            // cardInvestigadores
+            // 
+            this.cardInvestigadores.BackColor = System.Drawing.Color.Transparent;
+            this.cardInvestigadores.Controls.Add(this.lblInvestigador);
+            this.cardInvestigadores.Controls.Add(this.lstInvestigadores);
+            this.cardInvestigadores.FillColor = System.Drawing.Color.White;
+            this.cardInvestigadores.Location = new System.Drawing.Point(900, 84);
+            this.cardInvestigadores.Name = "cardInvestigadores";
+            this.cardInvestigadores.ShadowColor = System.Drawing.Color.Black;
+            this.cardInvestigadores.Size = new System.Drawing.Size(313, 302);
+            this.cardInvestigadores.TabIndex = 12;
+            // 
+            // lblInvestigador
+            // 
+            this.lblInvestigador.BackColor = System.Drawing.Color.Transparent;
+            this.lblInvestigador.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInvestigador.Location = new System.Drawing.Point(23, 15);
+            this.lblInvestigador.Name = "lblInvestigador";
+            this.lblInvestigador.Size = new System.Drawing.Size(208, 22);
+            this.lblInvestigador.TabIndex = 3;
+            this.lblInvestigador.Text = "Seleccionar investigador";
+            // 
+            // cardMotivo
+            // 
+            this.cardMotivo.BackColor = System.Drawing.Color.Transparent;
+            this.cardMotivo.Controls.Add(this.lblMotivo);
+            this.cardMotivo.Controls.Add(this.txtMotivo);
+            this.cardMotivo.FillColor = System.Drawing.Color.White;
+            this.cardMotivo.Location = new System.Drawing.Point(209, 418);
+            this.cardMotivo.Name = "cardMotivo";
+            this.cardMotivo.ShadowColor = System.Drawing.Color.Black;
+            this.cardMotivo.Size = new System.Drawing.Size(1004, 198);
+            this.cardMotivo.TabIndex = 13;
+            // 
+            // lblMotivo
+            // 
+            this.lblMotivo.BackColor = System.Drawing.Color.Transparent;
+            this.lblMotivo.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMotivo.Location = new System.Drawing.Point(18, 23);
+            this.lblMotivo.Name = "lblMotivo";
+            this.lblMotivo.Size = new System.Drawing.Size(148, 22);
+            this.lblMotivo.TabIndex = 2;
+            this.lblMotivo.Text = "Motivo de reunion";
             // 
             // FormLider
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1091, 675);
-            this.Controls.Add(this.groupBox1);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.ClientSize = new System.Drawing.Size(1251, 726);
+            this.Controls.Add(this.cardMotivo);
+            this.Controls.Add(this.cardInvestigadores);
+            this.Controls.Add(this.cardHoras);
+            this.Controls.Add(this.cardFecha);
+            this.Controls.Add(this.btnlimpiar);
+            this.Controls.Add(this.btnGuardar);
+            this.Controls.Add(this.lblSemillero);
             this.Controls.Add(this.lblBienvenida);
             this.Controls.Add(this.guna2Panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FormLider";
             this.Text = "FormLider";
             this.Load += new System.EventHandler(this.FormLider_Load);
             this.guna2Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.grpCalendario.ResumeLayout(false);
-            this.grpHoras.ResumeLayout(false);
-            this.grpInvestigadores.ResumeLayout(false);
+            this.cardFecha.ResumeLayout(false);
+            this.cardFecha.PerformLayout();
+            this.cardHoras.ResumeLayout(false);
+            this.cardHoras.PerformLayout();
+            this.cardInvestigadores.ResumeLayout(false);
+            this.cardInvestigadores.PerformLayout();
+            this.cardMotivo.ResumeLayout(false);
+            this.cardMotivo.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -313,22 +372,25 @@
 
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox grpCalendario;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblSemillero;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblBienvenida;
         private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox1;
-        private System.Windows.Forms.GroupBox grpInvestigadores;
         private System.Windows.Forms.CheckedListBox lstInvestigadores;
-        private System.Windows.Forms.GroupBox grpHoras;
         private System.Windows.Forms.ListBox lstHoras;
         private System.Windows.Forms.MonthCalendar calendario;
         private Guna.UI2.WinForms.Guna2TextBox txtMotivo;
-        private Guna.UI2.WinForms.Guna2HtmlLabel lblMotivo;
         private Guna.UI2.WinForms.Guna2Button btnGuardar;
         private Guna.UI2.WinForms.Guna2Button btnCerrarSesion;
         private Guna.UI2.WinForms.Guna2Button btnVerReuniones;
         private Guna.UI2.WinForms.Guna2Button btnRegistrar;
         private Guna.UI2.WinForms.Guna2Button btnlimpiar;
+        private Guna.UI2.WinForms.Guna2ShadowPanel cardInvestigadores;
+        private Guna.UI2.WinForms.Guna2ShadowPanel cardHoras;
+        private Guna.UI2.WinForms.Guna2ShadowPanel cardFecha;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblTitutloFecha;
+        private Guna.UI2.WinForms.Guna2ShadowPanel cardMotivo;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblMotivo;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblInvestigador;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblHorasDisponibles;
     }
 }

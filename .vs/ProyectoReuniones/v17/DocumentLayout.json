@@ -1,46 +1,30 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\",
+  "WorkspaceRootPath": "C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\f\\Desktop\\ProyectoReuniones\\proyectoreuniones\\formlider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\formlider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|c:\\users\\asus\\onedrive\\desktop\\maristelaproyecto\\proyectoreuniones\\proyectoreuniones\\form_lider_consultar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\form_lider_consultar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\f\\Desktop\\ProyectoReuniones\\proyectoreuniones\\formlider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\formlider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\f\\Desktop\\ProyectoReuniones\\proyectoreuniones\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\f\\Desktop\\ProyectoReuniones\\proyectoreuniones\\modelos\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\modelos\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|c:\\users\\f\\desktop\\proyectoreuniones\\proyectoreuniones\\conexion\\conexionmongodb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\conexion\\conexionmongodb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\f\\Desktop\\ProyectoReuniones\\proyectoreuniones\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\f\\Desktop\\ProyectoReuniones\\proyectoreuniones\\forminvestigador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\forminvestigador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\f\\Desktop\\ProyectoReuniones\\proyectoreuniones\\forminvestigador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\proyectoreuniones\\forminvestigador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\forminvestigador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\f\\Desktop\\ProyectoReuniones\\proyectoreuniones\\modelos\\semillero.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\modelos\\semillero.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\proyectoreuniones\\formlider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\formlider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\f\\Desktop\\ProyectoReuniones\\proyectoreuniones\\modelos\\reunion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\modelos\\reunion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\proyectoreuniones\\formlider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\formlider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\proyectoreuniones\\forminvestigador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\forminvestigador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\proyectoreuniones\\form_lider_consultar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{ACE314D8-702A-42AA-8B53-91DE32A424AE}|ProyectoReuniones\\ProyectoReuniones.csproj|solutionrelative:proyectoreuniones\\form_lider_consultar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,28 +34,8 @@
       "DocumentGroups": [
         {
           "DockedHeight": 133,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
@@ -82,126 +46,73 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Form1.cs [Dise\u00F1o]",
-              "DocumentMoniker": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\Form1.cs",
-              "RelativeDocumentMoniker": "ProyectoReuniones\\Form1.cs",
-              "ToolTip": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\Form1.cs [Dise\u00F1o]",
-              "RelativeToolTip": "ProyectoReuniones\\Form1.cs [Dise\u00F1o]",
+              "DocumentIndex": 0,
+              "Title": "Form_Lider_Consultar.cs",
+              "DocumentMoniker": "C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\ProyectoReuniones\\Form_Lider_Consultar.cs",
+              "RelativeDocumentMoniker": "ProyectoReuniones\\Form_Lider_Consultar.cs",
+              "ToolTip": "C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\ProyectoReuniones\\Form_Lider_Consultar.cs",
+              "RelativeToolTip": "ProyectoReuniones\\Form_Lider_Consultar.cs",
+              "ViewState": "AgIAAHMAAAAAAAAAAAAUwAwAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-01T01:55:28.291Z",
-              "EditorCaption": " [Dise\u00F1o]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Usuario.cs",
-              "DocumentMoniker": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\Modelos\\Usuario.cs",
-              "RelativeDocumentMoniker": "ProyectoReuniones\\Modelos\\Usuario.cs",
-              "ToolTip": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\Modelos\\Usuario.cs",
-              "RelativeToolTip": "ProyectoReuniones\\Modelos\\Usuario.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAACIAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-01T02:00:34.899Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ConexionMongoDB.cs",
-              "DocumentMoniker": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\Conexion\\ConexionMongoDB.cs",
-              "RelativeDocumentMoniker": "ProyectoReuniones\\Conexion\\ConexionMongoDB.cs",
-              "ToolTip": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\Conexion\\ConexionMongoDB.cs",
-              "RelativeToolTip": "ProyectoReuniones\\Conexion\\ConexionMongoDB.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-01T02:02:03.262Z",
+              "WhenOpened": "2026-05-04T02:48:27.562Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "FormLider.cs [Dise\u00F1o]",
-              "DocumentMoniker": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\FormLider.cs",
-              "RelativeDocumentMoniker": "ProyectoReuniones\\FormLider.cs",
-              "ToolTip": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\FormLider.cs [Dise\u00F1o]",
-              "RelativeToolTip": "ProyectoReuniones\\FormLider.cs [Dise\u00F1o]",
+              "Title": "FormInvestigador.cs",
+              "DocumentMoniker": "C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\ProyectoReuniones\\FormInvestigador.cs",
+              "RelativeDocumentMoniker": "ProyectoReuniones\\FormInvestigador.cs",
+              "ToolTip": "C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\ProyectoReuniones\\FormInvestigador.cs",
+              "RelativeToolTip": "ProyectoReuniones\\FormInvestigador.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-01T02:26:17.919Z",
-              "EditorCaption": " [Dise\u00F1o]"
+              "WhenOpened": "2026-05-04T02:47:27.526Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "FormLider.cs",
-              "DocumentMoniker": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\FormLider.cs",
+              "DocumentMoniker": "C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\ProyectoReuniones\\FormLider.cs",
               "RelativeDocumentMoniker": "ProyectoReuniones\\FormLider.cs",
-              "ToolTip": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\FormLider.cs",
+              "ToolTip": "C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\ProyectoReuniones\\FormLider.cs",
               "RelativeToolTip": "ProyectoReuniones\\FormLider.cs",
-              "ViewState": "AgIAAIsAAAAAAAAAAAAQwJ4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABMAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-01T02:27:39.405Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-02T21:50:13.211Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "Form1.cs",
-              "DocumentMoniker": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\Form1.cs",
-              "RelativeDocumentMoniker": "ProyectoReuniones\\Form1.cs",
-              "ToolTip": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\Form1.cs",
-              "RelativeToolTip": "ProyectoReuniones\\Form1.cs",
-              "ViewState": "AgIAADYAAAAAAAAAAAAgwE4AAAARAAAAAAAAAA==",
+              "Title": "Form_Lider_Consultar.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\ProyectoReuniones\\Form_Lider_Consultar.cs",
+              "RelativeDocumentMoniker": "ProyectoReuniones\\Form_Lider_Consultar.cs",
+              "ToolTip": "C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\ProyectoReuniones\\Form_Lider_Consultar.cs [Dise\u00F1o]",
+              "RelativeToolTip": "ProyectoReuniones\\Form_Lider_Consultar.cs [Dise\u00F1o]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-01T02:23:10.933Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-02T21:42:55.089Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
               "Title": "FormInvestigador.cs [Dise\u00F1o]",
-              "DocumentMoniker": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\FormInvestigador.cs",
+              "DocumentMoniker": "C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\ProyectoReuniones\\FormInvestigador.cs",
               "RelativeDocumentMoniker": "ProyectoReuniones\\FormInvestigador.cs",
-              "ToolTip": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\FormInvestigador.cs [Dise\u00F1o]",
+              "ToolTip": "C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\ProyectoReuniones\\FormInvestigador.cs [Dise\u00F1o]",
               "RelativeToolTip": "ProyectoReuniones\\FormInvestigador.cs [Dise\u00F1o]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-01T02:25:58.934Z"
+              "WhenOpened": "2026-05-01T00:20:18.537Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "FormInvestigador.cs",
-              "DocumentMoniker": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\FormInvestigador.cs",
-              "RelativeDocumentMoniker": "ProyectoReuniones\\FormInvestigador.cs",
-              "ToolTip": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\FormInvestigador.cs",
-              "RelativeToolTip": "ProyectoReuniones\\FormInvestigador.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAlAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "FormLider.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\ProyectoReuniones\\FormLider.cs",
+              "RelativeDocumentMoniker": "ProyectoReuniones\\FormLider.cs",
+              "ToolTip": "C:\\Users\\Asus\\OneDrive\\Desktop\\MaristelaProyecto\\ProyectoReuniones\\ProyectoReuniones\\FormLider.cs [Dise\u00F1o]",
+              "RelativeToolTip": "ProyectoReuniones\\FormLider.cs [Dise\u00F1o]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-01T02:29:09.335Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Semillero.cs",
-              "DocumentMoniker": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\Modelos\\Semillero.cs",
-              "RelativeDocumentMoniker": "ProyectoReuniones\\Modelos\\Semillero.cs",
-              "ToolTip": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\Modelos\\Semillero.cs",
-              "RelativeToolTip": "ProyectoReuniones\\Modelos\\Semillero.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-01T01:59:44.272Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Reunion.cs",
-              "DocumentMoniker": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\Modelos\\Reunion.cs",
-              "RelativeDocumentMoniker": "ProyectoReuniones\\Modelos\\Reunion.cs",
-              "ToolTip": "C:\\Users\\f\\Desktop\\ProyectoReuniones\\ProyectoReuniones\\Modelos\\Reunion.cs",
-              "RelativeToolTip": "ProyectoReuniones\\Modelos\\Reunion.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-01T02:01:11.59Z"
+              "WhenOpened": "2026-05-01T00:54:16.336Z"
             }
           ]
         }

@@ -17,6 +17,7 @@ namespace ProyectoReuniones
     {
         // Variable que guarda el usuario que inició sesión
         private Usuario _usuarioActual;
+       
 
         // ── Horas fijas disponibles para reuniones ────────────────────
         private readonly List<string> _todasLasHoras = new List<string>
@@ -29,8 +30,86 @@ namespace ProyectoReuniones
         public FormLider(Usuario usuario)
         {
             InitializeComponent();
-            // Guardamos el usuario para usarlo en toda la ventana
             _usuarioActual = usuario;
+
+            // --- Configuración General del Form ---
+            this.BackColor = Color.FromArgb(237, 242, 247);
+            this.BackColor = SystemColors.ActiveCaption;
+
+            // --- Estilizar Cards (Contenedores) ---
+            ConfigurarCard(cardFecha);
+            ConfigurarCard(cardHoras);
+            ConfigurarCard(cardInvestigadores);
+            ConfigurarCard(cardMotivo);
+
+            // --- Estilizar Títulos ---
+            ConfigurarLabelTitulo(lblTitutloFecha);
+            ConfigurarLabelTitulo(lblHorasDisponibles);
+            ConfigurarLabelTitulo(lblInvestigador);
+            ConfigurarLabelTitulo(lblMotivo);
+
+            // --- 1. DISEÑO: Calendario (Guna2DateTimePicker) ---
+            // Si usas el MonthCalendar estándar, lo estilizaremos mínimamente 
+            // o puedes cambiarlo por Guna2DateTimePicker en el diseñador
+            calendario.BackColor = Color.White;
+            calendario.TitleBackColor = Color.FromArgb(59, 130, 246); // Azul moderno
+
+            // --- 2. DISEÑO: Lista de Horas (lstHoras) ---
+            lstHoras.BorderStyle = BorderStyle.None;
+            lstHoras.BackColor = Color.White;
+            lstHoras.Font = new Font("Segoe UI", 10F);
+            lstHoras.ItemHeight = 30; // Más espacio para cada hora
+            lstHoras.ForeColor = Color.FromArgb(71, 85, 105);
+
+            // --- 3. DISEÑO: Lista de Investigadores (lstInvestigadores) ---
+            lstInvestigadores.BorderStyle = BorderStyle.None;
+            lstInvestigadores.BackColor = Color.White;
+            lstInvestigadores.Font = new Font("Segoe UI", 10F);
+            lstInvestigadores.CheckOnClick = true;
+            lstInvestigadores.ForeColor = Color.FromArgb(71, 85, 105);
+
+           
+            txtMotivo.PlaceholderText = "Describe el objetivo de la reunión...";
+            txtMotivo.BorderRadius = 12;
+            txtMotivo.FillColor = Color.FromArgb(249, 250, 251);
+            txtMotivo.BorderColor = Color.FromArgb(220, 220, 220);
+            txtMotivo.FocusedState.BorderColor = Color.FromArgb(59, 130, 246);
+
+   
+            lblBienvenida.Font = new Font("Segoe UI Semibold", 16F);
+            lblBienvenida.ForeColor = Color.FromArgb(15, 23, 42);
+            lblSemillero.Font = new Font("Segoe UI", 10F);
+            lblSemillero.ForeColor = Color.FromArgb(100, 116, 139);
+
+            txtMotivo.FillColor = Color.White; // Cambiamos el gris claro por blanco puro
+            txtMotivo.ForeColor = Color.FromArgb(15, 23, 42); // Un color de texto casi negro para máximo contraste
+            txtMotivo.BorderColor = Color.FromArgb(180, 180, 180); // Un gris un poco más oscuro para definir el borde
+            txtMotivo.BorderThickness = 1; // Aseguramos que el borde sea visible
+            txtMotivo.Font = new Font("Segoe UI", 11F); // Subimos un poco el tamaño para mejor legibilidad
+
+            // Color del Placeholder (el texto de fondo) para que no parezca deshabilitado
+            txtMotivo.PlaceholderForeColor = Color.FromArgb(150, 150, 150);
+
+            // Efecto al hacer clic (esto le da mucha vida)
+            txtMotivo.FocusedState.BorderColor = SystemColors.ActiveCaption;
+            txtMotivo.FocusedState.FillColor = Color.White;
+        }
+
+        // Método auxiliar para no repetir código en los títulos de las secciones
+        // Cambiamos 'Label' por 'Guna.UI2.WinForms.Guna2HtmlLabel'
+        private void ConfigurarLabelTitulo(Guna.UI2.WinForms.Guna2HtmlLabel lbl)
+        {
+            lbl.Font = new Font("Segoe UI Semibold", 11F);
+            lbl.ForeColor = Color.FromArgb(30, 41, 59);
+        }
+
+        private void ConfigurarCard(Guna.UI2.WinForms.Guna2ShadowPanel card)
+        {
+            card.FillColor = Color.White;
+            card.Radius = 15; // Un poco menos redondo para verse más limpio
+            card.ShadowColor = Color.FromArgb(200, 210, 230); // Sombra más clara/azulada
+            card.ShadowDepth = 8;
+            card.ShadowShift = 5;
         }
 
         private void FormLider_Load(object sender, EventArgs e)
@@ -291,6 +370,23 @@ namespace ProyectoReuniones
 
             // Recargar las horas disponibles para el día de hoy
             CargarHorasDisponibles(DateTime.Today);
+        }
+
+        private void guna2HtmlLabel2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnVerReuniones_Click(object sender, EventArgs e)
+        {
+            Form_Lider_Consultar flc = new Form_Lider_Consultar(_usuarioActual);
+            flc.Show();
+            this.Hide();
+        }
+
+        private void lstHoras_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
