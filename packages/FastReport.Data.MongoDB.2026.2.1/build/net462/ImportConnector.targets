@@ -1,0 +1,18 @@
+<Project DefaultTargets="Build" InitialTargets="_ImportConnector_FastReportDataMongoDB_net462" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup Condition="'$(_FRProductType)' == ''">
+    <_FRProductType>FastReport.Net</_FRProductType>
+  </PropertyGroup>
+
+  <Target Name="_ImportConnector_FastReportDataMongoDB_net462" Condition="$(_frDebug) == 'true'">
+    <Message Importance="high" Text="ImportConnector: net462\$(_FRProductType)\FastReport.Data.MongoDB.dll"/>
+  </Target>
+
+  <!-- Plugin import depending on the product -->
+
+
+  <ItemGroup>
+    <Reference Include="$(MSBuildThisFileDirectory)$(_FRProductType)\FastReport.Data.MongoDB.dll" Condition="Exists('$(MSBuildThisFileDirectory)$(_FRProductType)\FastReport.Data.MongoDB.dll')"/>
+  </ItemGroup>
+  
+</Project>

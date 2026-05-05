@@ -34,8 +34,8 @@ namespace ProyectoReuniones
             cbFiltro.Items.Clear();
             cbFiltro.Items.Add("Fecha");
             cbFiltro.Items.Add("Hora");
-            cbFiltro.Items.Add("Motivo");   
-            cbFiltro.SelectedIndex = 0; // Por defecto Fecha
+            cbFiltro.Items.Add("Investigador"); // 👈 nuevo
+            cbFiltro.SelectedIndex = 0;
 
             ConfigurarEstructuraGrid();
         }
@@ -119,8 +119,8 @@ namespace ProyectoReuniones
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            // 1. Validación de campo vacío o texto por defecto
             string valor = txtBusqueda.Text.Trim();
+
             if (string.IsNullOrWhiteSpace(valor) || valor == "Ingrese valor de busqueda...")
             {
                 MessageBox.Show("Por favor, ingrese un término de búsqueda válido.",
@@ -133,41 +133,53 @@ namespace ProyectoReuniones
             {
                 string filtro = cbFiltro.SelectedItem.ToString();
 
-                // Filtro base: Solo reuniones donde el investigador actual participa
+                // Solo reuniones donde participa el investigador actual
                 var query = BD.Instancia.Reuniones
                     .Find(r => r.NumerosInvestigadores.Contains(_usuarioActual.NumeroUsuario));
 
-                List<Reunion> resultados = new List<Reunion>();
                 var todasMisReuniones = query.ToList();
+                List<Reunion> resultados = new List<Reunion>();
 
-                // 2. Aplicación de filtros con validaciones específicas
                 switch (filtro)
                 {
                     case "Fecha":
-                        // Validación estricta de fecha
                         if (DateTime.TryParse(valor, out DateTime fechaBusqueda))
                         {
                             resultados = todasMisReuniones
-                                .Where(r => r.FechaReu.Date == fechaBusqueda.Date).ToList();
+                                .Where(r => r.FechaReu.Date == fechaBusqueda.Date)
+                                .ToList();
                         }
                         else
                         {
-                            MessageBox.Show("El formato de fecha es incorrecto. Use: DD/MM/AAAA",
-                                            "Error de Formato", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Formato de fecha incorrecto. Use DD/MM/AAAA");
                             return;
                         }
                         break;
 
                     case "Hora":
-                        // Búsqueda parcial de hora (ej: "10" traerá 10:00, 10:30, etc.)
                         resultados = todasMisReuniones
-                            .Where(r => r.HoraReu.Contains(valor)).ToList();
+                            .Where(r => r.HoraReu != null && r.HoraReu.Contains(valor))
+                            .ToList();
                         break;
 
-                    case "Motivo":
-                        // Búsqueda insensible a mayúsculas/minúsculas y espacios extra
+                    case "Investigador":
+
+                        // 🔥 Buscar usuarios por nombre
+                        var usuarios = BD.Instancia.Usuarios
+                            .Find(u => u.NombreUsuario.ToLower().Contains(valor.ToLower()))
+                            .ToList();
+
+                        List<int> numerosUsuarios = new List<int>();
+
+                        foreach (var u in usuarios)
+                        {
+                            numerosUsuarios.Add(u.NumeroUsuario);
+                        }
+
+                        // 🔥 Filtrar reuniones donde esté ese investigador
                         resultados = todasMisReuniones
-                            .Where(r => r.MotivoReu.IndexOf(valor, StringComparison.OrdinalIgnoreCase) >= 0)
+                            .Where(r => r.NumerosInvestigadores != null &&
+                                        r.NumerosInvestigadores.Any(n => numerosUsuarios.Contains(n)))
                             .ToList();
                         break;
 
@@ -180,11 +192,9 @@ namespace ProyectoReuniones
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ocurrió un error inesperado durante la consulta: " + ex.Message,
-                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
-        
 
         private void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -199,6 +209,23 @@ namespace ProyectoReuniones
         private void guna2DataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
 
+        }
+
+        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            DialogResult r = MessageBox.Show(
+                "¿Desea cerrar sesión?",
+                "Cerrar sesión",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (r == DialogResult.Yes)
+            {
+                Form1 login = new Form1(); // 👈 tu formulario de login
+                login.Show();
+
+                this.Hide(); // 👈 oculta este formulario
+            }
         }
     }
 }

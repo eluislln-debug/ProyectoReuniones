@@ -103,5 +103,20 @@ namespace ProyectoReuniones
                 );
             }
         }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+            DialogResult resultado = MessageBox.Show(
+                "¿Desea salir de la aplicación?",
+                "Confirmar salida",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (resultado == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
     }
 }

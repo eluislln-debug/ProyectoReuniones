@@ -1,0 +1,7 @@
+<Project InitialTargets="_DebugMode_FastReportDataMongoDB_net60-windows70" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="_DebugMode_FastReportDataMongoDB_net60-windows70" Condition="$(_frDebug) == 'true'">
+    <Message Importance="high" Text="TargetFrameworkIdentifier: $(TargetFrameworkIdentifier)"/>
+    <Message Importance="high" Text="TargetFrameworkVersion: $(TargetFrameworkVersion.Substring(1))" />
+    <Message Importance="high" Text="FR product: $(_FRProductType)"/>
+  </Target>
+</Project>

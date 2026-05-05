@@ -1,0 +1,7 @@
+<Project InitialTargets="_FR_Init_buildTransitive_FastReportDataMongoDB_net462" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="_FR_Init_buildTransitive_FastReportDataMongoDB_net462" Condition="$(_frDebug) == 'true'">
+    <Message Importance="high" Text="buildTransitive\net462\$(MSBuildThisFile)"/>
+  </Target>
+
+  <Import Project="..\..\build\net462\$(MSBuildThisFile)" />
+</Project>

@@ -95,6 +95,10 @@ namespace ProyectoReuniones
             txtMotivo.FocusedState.FillColor = Color.White;
         }
 
+        public FormLider()
+        {
+        }
+
         // Método auxiliar para no repetir código en los títulos de las secciones
         // Cambiamos 'Label' por 'Guna.UI2.WinForms.Guna2HtmlLabel'
         private void ConfigurarLabelTitulo(Guna.UI2.WinForms.Guna2HtmlLabel lbl)
@@ -388,5 +392,8 @@ namespace ProyectoReuniones
         {
 
         }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        { }
     }
 }

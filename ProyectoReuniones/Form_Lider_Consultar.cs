@@ -1,116 +1,119 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
-using ProyectoReuniones.Conexion;
-using ProyectoReuniones.Modelos;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using MongoDB.Bson.Serialization.Attributes;
+﻿    using MongoDB.Bson;
+    using MongoDB.Driver;
+    using ProyectoReuniones.Conexion;
+    using ProyectoReuniones.Modelos;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Drawing;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using MongoDB.Bson.Serialization.Attributes;
+    
+
 
 namespace ProyectoReuniones
-{
-   
-    public partial class Form_Lider_Consultar : Form
     {
-        private Usuario _usuarioActual;
-        private string idReunionSeleccionada = "";
-        private string motivoReunionSeleccionada = "";
-       
-       
-        public Form_Lider_Consultar(Usuario usuario)
+   
+        public partial class Form_Lider_Consultar : Form
         {
-            InitializeComponent();
-            _usuarioActual = usuario;
-            lblBienbenido.Text = "Bienvenido, " + _usuarioActual.NombreUsuario;
-            // 2. Configuración de controles
-            txtBusqueda.Text = "";
-            txtBusqueda.PlaceholderText = "Ingrese valor de busqueda...";
-
+            private Usuario _usuarioActual;
+            private string idReunionSeleccionada = "";
+            private string motivoReunionSeleccionada = "";
+       
+       
+            public Form_Lider_Consultar(Usuario usuario)
+            {
+                InitializeComponent();
+                _usuarioActual = usuario;
+                lblBienbenido.Text = "Bienvenido, " + _usuarioActual.NombreUsuario;
+                // 2. Configuración de controles
+                txtBusqueda.Text = "";
+                txtBusqueda.PlaceholderText = "Ingrese valor de busqueda...";
             cbFiltro.Items.Clear();
             cbFiltro.Items.Add("Fecha");
             cbFiltro.Items.Add("Hora");
-            cbFiltro.Items.Add("Motivo");
+            cbFiltro.Items.Add("Investigador"); // 👈 nuevo
             cbFiltro.SelectedIndex = 0;
 
             // 3. Preparar el Grid
             ConfigurarEstructuraGrid();
-        }
-
-        private void ConfigurarEstructuraGrid()
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("ID_Internal"); // Columna oculta para MongoDB
-            dt.Columns.Add("Fecha");
-            dt.Columns.Add("Hora");
-            dt.Columns.Add("Motivo");
-            dt.Columns.Add("Participantes");
-
-            guna2DataGridView1.DataSource = dt;
-
-            // Ajustes visuales
-            guna2DataGridView1.Columns["ID_Internal"].Visible = false; // Ocultamos el ID técnico
-            guna2DataGridView1.ColumnHeadersVisible = true;
-            guna2DataGridView1.ColumnHeadersHeight = 40;
-            guna2DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            guna2DataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            guna2DataGridView1.MultiSelect = false;
-            guna2DataGridView1.ReadOnly = true;
-
-            guna2DataGridView1.Refresh();
-        }
-
-        private void CargarGrid(List<Reunion> listaReuniones)
-        {
-            DataTable dt = (DataTable)guna2DataGridView1.DataSource;
-            dt.Rows.Clear();
-
-            foreach (var r in listaReuniones)
-            {
-                // Mostramos cantidad de investigadores invitados como info extra para el líder
-                string infoParticipantes = r.NumerosInvestigadores != null ?
-                                           r.NumerosInvestigadores.Count.ToString() : "0";
-
-                dt.Rows.Add(
-                    r.Id.ToString(), // El ObjectId de MongoDB
-                    r.FechaReu.ToString("dd/MM/yyyy"),
-                    r.HoraReu,
-                    r.MotivoReu,
-                    infoParticipantes + " Investigadores"
-                );
             }
 
-            if (listaReuniones.Count == 0)
+            private void ConfigurarEstructuraGrid()
             {
-                MessageBox.Show("No se encontraron registros.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
+                DataTable dt = new DataTable();
+                dt.Columns.Add("ID_Internal"); // Columna oculta para MongoDB
+                dt.Columns.Add("Fecha");
+                dt.Columns.Add("Hora");
+                dt.Columns.Add("Motivo");
+                dt.Columns.Add("Participantes");
 
-        private void ConsultarTodasLasReuniones()
-        {
-            try
+                guna2DataGridView1.DataSource = dt;
+
+                // Ajustes visuales
+                guna2DataGridView1.Columns["ID_Internal"].Visible = false; // Ocultamos el ID técnico
+                guna2DataGridView1.ColumnHeadersVisible = true;
+                guna2DataGridView1.ColumnHeadersHeight = 40;
+                guna2DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                guna2DataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                guna2DataGridView1.MultiSelect = false;
+                guna2DataGridView1.ReadOnly = true;
+
+                guna2DataGridView1.Refresh();
+            }
+
+            private void CargarGrid(List<Reunion> listaReuniones)
             {
-                // El Líder solo ve las reuniones donde su NumeroUsuario coincide con NumeroLider
-                var reuniones = BD.Instancia.Reuniones
-                    .Find(r => r.NumeroLider == _usuarioActual.NumeroUsuario)
-                    .ToList();
+                DataTable dt = (DataTable)guna2DataGridView1.DataSource;
+                dt.Rows.Clear();
 
-                CargarGrid(reuniones);
+                foreach (var r in listaReuniones)
+                {
+                    // Mostramos cantidad de investigadores invitados como info extra para el líder
+                    string infoParticipantes = r.NumerosInvestigadores != null ?
+                                               r.NumerosInvestigadores.Count.ToString() : "0";
+
+                    dt.Rows.Add(
+                        r.Id.ToString(), // El ObjectId de MongoDB
+                        r.FechaReu.ToString("dd/MM/yyyy"),
+                        r.HoraReu,
+                        r.MotivoReu,
+                        infoParticipantes + " Investigadores"
+                    );
+                }
+
+                if (listaReuniones.Count == 0)
+                {
+                    MessageBox.Show("No se encontraron registros.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
-            catch (Exception ex)
+
+            private void ConsultarTodasLasReuniones()
             {
-                MessageBox.Show("Error al cargar: " + ex.Message);
-            }
-        }
+                try
+                {
+                    // El Líder solo ve las reuniones donde su NumeroUsuario coincide con NumeroLider
+                    var reuniones = BD.Instancia.Reuniones
+                        .Find(r => r.NumeroLider == _usuarioActual.NumeroUsuario)
+                        .ToList();
 
-        private void guna2Button1_Click(object sender, EventArgs e)
+                    CargarGrid(reuniones);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al cargar: " + ex.Message);
+                }
+            }
+
+            private void guna2Button1_Click(object sender, EventArgs e)
+
         {
             string valor = txtBusqueda.Text.Trim();
+
             if (string.IsNullOrWhiteSpace(valor))
             {
                 MessageBox.Show("Ingrese un término de búsqueda.");
@@ -120,9 +123,10 @@ namespace ProyectoReuniones
             try
             {
                 string filtro = cbFiltro.SelectedItem.ToString();
+
                 var queryBase = BD.Instancia.Reuniones
-                                .Find(r => r.NumeroLider == _usuarioActual.NumeroUsuario)
-                                .ToList();
+                    .Find(r => r.NumeroLider == _usuarioActual.NumeroUsuario)
+                    .ToList();
 
                 List<Reunion> resultados = new List<Reunion>();
 
@@ -130,92 +134,123 @@ namespace ProyectoReuniones
                 {
                     case "Fecha":
                         if (DateTime.TryParse(valor, out DateTime f))
-                            resultados = queryBase.Where(r => r.FechaReu.Date == f.Date).ToList();
+                        {
+                            resultados = queryBase
+                                .Where(r => r.FechaReu.Date == f.Date)
+                                .ToList();
+                        }
                         break;
+
                     case "Hora":
-                        resultados = queryBase.Where(r => r.HoraReu.Contains(valor)).ToList();
+                        resultados = queryBase
+                            .Where(r => r.HoraReu != null && r.HoraReu.Contains(valor))
+                            .ToList();
                         break;
-                    case "Motivo":
-                        resultados = queryBase.Where(r => r.MotivoReu.IndexOf(valor, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+
+                    case "Investigador":
+
+                        var usuarios = BD.Instancia.Usuarios
+                            .Find(u => u.NombreUsuario.ToLower().Contains(valor.ToLower()))
+                            .ToList();
+
+                        List<int> numerosUsuarios = new List<int>();
+
+                        foreach (var u in usuarios)
+                        {
+                            numerosUsuarios.Add(u.NumeroUsuario);
+                        }
+
+                        resultados = queryBase
+                            .Where(r => r.NumerosInvestigadores != null &&
+                                        r.NumerosInvestigadores.Any(n => numerosUsuarios.Contains(n)))
+                            .ToList();
                         break;
                 }
+
                 CargarGrid(resultados);
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
-        }
-
-        private void guna2Button2_Click(object sender, EventArgs e)
-        {
-            ConsultarTodasLasReuniones();
-        }
-
-        private void guna2Button3_Click(object sender, EventArgs e)
-        {
-            // 1. Validamos selección
-            if (string.IsNullOrEmpty(idReunionSeleccionada))
+            catch (Exception ex)
             {
-                MessageBox.Show("Por favor, selecciona una reunión.");
-                return;
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+        private void guna2Button2_Click(object sender, EventArgs e)
+            {
+                ConsultarTodasLasReuniones();
             }
 
-            if (MessageBox.Show($"¿Deseas cancelar la reunión?", "Confirmar", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            private void guna2Button3_Click(object sender, EventArgs e)
             {
-                try
+                // 1. Validamos selección
+                if (string.IsNullOrEmpty(idReunionSeleccionada))
                 {
-                    // EL CAMBIO ESTÁ AQUÍ: 
-                    // Como tu clase 'Reunion' usa 'string Id', el filtro debe comparar contra el string.
-                    // No necesitas hacer el .Parse() a ObjectId para el filtro de LINQ.
+                    MessageBox.Show("Por favor, selecciona una reunión.");
+                    return;
+                }
 
-                    var filtro = Builders<Reunion>.Filter.Eq(r => r.Id, idReunionSeleccionada);
-
-                    // Ejecutamos la eliminación
-                    var resultado = BD.Instancia.Reuniones.DeleteOne(filtro);
-
-                    if (resultado.DeletedCount > 0)
+                if (MessageBox.Show($"¿Deseas cancelar la reunión?", "Confirmar", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    try
                     {
-                        MessageBox.Show("Reunión cancelada correctamente.", "Éxito");
-                        idReunionSeleccionada = "";
-                        ConsultarTodasLasReuniones();
+                        // EL CAMBIO ESTÁ AQUÍ: 
+                        // Como tu clase 'Reunion' usa 'string Id', el filtro debe comparar contra el string.
+                        // No necesitas hacer el .Parse() a ObjectId para el filtro de LINQ.
+
+                        var filtro = Builders<Reunion>.Filter.Eq(r => r.Id, idReunionSeleccionada);
+
+                        // Ejecutamos la eliminación
+                        var resultado = BD.Instancia.Reuniones.DeleteOne(filtro);
+
+                        if (resultado.DeletedCount > 0)
+                        {
+                            MessageBox.Show("Reunión cancelada correctamente.", "Éxito");
+                            idReunionSeleccionada = "";
+                            ConsultarTodasLasReuniones();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al eliminar: " + ex.Message);
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al eliminar: " + ex.Message);
-                }
             }
-        }
 
-        private void guna2DataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
+            private void guna2DataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+            {
             
-                if (e.RowIndex >= 0)
-                {
-                    // Obtenemos los datos de la fila seleccionada
-                    // "ID_Internal" es la columna que definimos como oculta en ConfigurarEstructuraGrid
-                    idReunionSeleccionada = guna2DataGridView1.Rows[e.RowIndex].Cells["ID_Internal"].Value.ToString();
-                    motivoReunionSeleccionada = guna2DataGridView1.Rows[e.RowIndex].Cells["Motivo"].Value.ToString();
+                    if (e.RowIndex >= 0)
+                    {
+                        // Obtenemos los datos de la fila seleccionada
+                        // "ID_Internal" es la columna que definimos como oculta en ConfigurarEstructuraGrid
+                        idReunionSeleccionada = guna2DataGridView1.Rows[e.RowIndex].Cells["ID_Internal"].Value.ToString();
+                        motivoReunionSeleccionada = guna2DataGridView1.Rows[e.RowIndex].Cells["Motivo"].Value.ToString();
 
-                    // Opcional: Podrías cambiar el color del botón de cancelar para indicar que ya se puede usar
-                    btnCancelar.FillColor = System.Drawing.Color.FromArgb(255, 82, 82); // Un rojo suave
-                }
+                        // Opcional: Podrías cambiar el color del botón de cancelar para indicar que ya se puede usar
+                        btnCancelar.FillColor = System.Drawing.Color.FromArgb(255, 82, 82); // Un rojo suave
+                    }
             
-        }
+            }
 
-        private void txtBusqueda_TextChanged(object sender, EventArgs e)
+            private void txtBusqueda_TextChanged(object sender, EventArgs e)
+            {
+
+            }
+
+            private void btnVerReuniones_Click(object sender, EventArgs e)
+            {
+
+            }
+
+            private void btnRegistrar_Click(object sender, EventArgs e)
+            {
+                FormLider fl = new FormLider(_usuarioActual);   
+                fl.Show();
+                this.Hide();
+            }
+
+        private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void btnVerReuniones_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnRegistrar_Click(object sender, EventArgs e)
-        {
-            FormLider fl = new FormLider(_usuarioActual);   
-            fl.Show();
-            this.Hide();
         }
     }
-}
+    }
