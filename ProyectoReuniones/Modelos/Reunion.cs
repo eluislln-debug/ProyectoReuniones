@@ -21,6 +21,9 @@ namespace ProyectoReuniones.Modelos
         [BsonElement("horaReu")]
         public string HoraReu { get; set; }
 
+        [BsonElement("horaFinReu")]
+        public string HoraFinReu { get; set; }
+
         [BsonElement("motivoReu")]
         public string MotivoReu { get; set; }
 

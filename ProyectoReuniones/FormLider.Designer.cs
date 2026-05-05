@@ -46,11 +46,14 @@
             this.cardFecha = new Guna.UI2.WinForms.Guna2ShadowPanel();
             this.lblTitutloFecha = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.cardHoras = new Guna.UI2.WinForms.Guna2ShadowPanel();
+            this.lblHoraFin = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.lblhorainicio = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.lblHorasDisponibles = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.cardInvestigadores = new Guna.UI2.WinForms.Guna2ShadowPanel();
             this.lblInvestigador = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.cardMotivo = new Guna.UI2.WinForms.Guna2ShadowPanel();
             this.lblMotivo = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.lstHoraFin = new System.Windows.Forms.ListBox();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).BeginInit();
             this.cardFecha.SuspendLayout();
@@ -159,7 +162,7 @@
             this.lblSemillero.Location = new System.Drawing.Point(209, 55);
             this.lblSemillero.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lblSemillero.Name = "lblSemillero";
-            this.lblSemillero.Size = new System.Drawing.Size(92, 24);
+            this.lblSemillero.Size = new System.Drawing.Size(111, 28);
             this.lblSemillero.TabIndex = 2;
             this.lblSemillero.Text = "Semillero: ";
             // 
@@ -223,17 +226,17 @@
             this.lstInvestigadores.Location = new System.Drawing.Point(23, 68);
             this.lstInvestigadores.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lstInvestigadores.Name = "lstInvestigadores";
-            this.lstInvestigadores.Size = new System.Drawing.Size(269, 208);
+            this.lstInvestigadores.Size = new System.Drawing.Size(269, 188);
             this.lstInvestigadores.TabIndex = 0;
             // 
             // lstHoras
             // 
             this.lstHoras.FormattingEnabled = true;
-            this.lstHoras.ItemHeight = 16;
-            this.lstHoras.Location = new System.Drawing.Point(19, 64);
+            this.lstHoras.ItemHeight = 20;
+            this.lstHoras.Location = new System.Drawing.Point(19, 88);
             this.lstHoras.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lstHoras.Name = "lstHoras";
-            this.lstHoras.Size = new System.Drawing.Size(269, 212);
+            this.lstHoras.Size = new System.Drawing.Size(123, 204);
             this.lstHoras.TabIndex = 0;
             this.lstHoras.SelectedIndexChanged += new System.EventHandler(this.lstHoras_SelectedIndexChanged);
             // 
@@ -263,13 +266,16 @@
             this.lblTitutloFecha.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitutloFecha.Location = new System.Drawing.Point(39, 15);
             this.lblTitutloFecha.Name = "lblTitutloFecha";
-            this.lblTitutloFecha.Size = new System.Drawing.Size(141, 22);
+            this.lblTitutloFecha.Size = new System.Drawing.Size(167, 25);
             this.lblTitutloFecha.TabIndex = 1;
             this.lblTitutloFecha.Text = "Selecionar fecha";
             // 
             // cardHoras
             // 
             this.cardHoras.BackColor = System.Drawing.Color.Transparent;
+            this.cardHoras.Controls.Add(this.lstHoraFin);
+            this.cardHoras.Controls.Add(this.lblHoraFin);
+            this.cardHoras.Controls.Add(this.lblhorainicio);
             this.cardHoras.Controls.Add(this.lblHorasDisponibles);
             this.cardHoras.Controls.Add(this.lstHoras);
             this.cardHoras.FillColor = System.Drawing.Color.White;
@@ -279,13 +285,33 @@
             this.cardHoras.Size = new System.Drawing.Size(313, 302);
             this.cardHoras.TabIndex = 11;
             // 
+            // lblHoraFin
+            // 
+            this.lblHoraFin.BackColor = System.Drawing.Color.Transparent;
+            this.lblHoraFin.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHoraFin.Location = new System.Drawing.Point(178, 57);
+            this.lblHoraFin.Name = "lblHoraFin";
+            this.lblHoraFin.Size = new System.Drawing.Size(102, 25);
+            this.lblHoraFin.TabIndex = 5;
+            this.lblHoraFin.Text = "Hora Final";
+            // 
+            // lblhorainicio
+            // 
+            this.lblhorainicio.BackColor = System.Drawing.Color.Transparent;
+            this.lblhorainicio.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblhorainicio.Location = new System.Drawing.Point(28, 58);
+            this.lblhorainicio.Name = "lblhorainicio";
+            this.lblhorainicio.Size = new System.Drawing.Size(107, 25);
+            this.lblhorainicio.TabIndex = 4;
+            this.lblhorainicio.Text = "Hora inicio";
+            // 
             // lblHorasDisponibles
             // 
             this.lblHorasDisponibles.BackColor = System.Drawing.Color.Transparent;
             this.lblHorasDisponibles.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblHorasDisponibles.Location = new System.Drawing.Point(19, 15);
             this.lblHorasDisponibles.Name = "lblHorasDisponibles";
-            this.lblHorasDisponibles.Size = new System.Drawing.Size(152, 22);
+            this.lblHorasDisponibles.Size = new System.Drawing.Size(179, 25);
             this.lblHorasDisponibles.TabIndex = 2;
             this.lblHorasDisponibles.Text = "Horas disponibles";
             this.lblHorasDisponibles.Click += new System.EventHandler(this.guna2HtmlLabel2_Click);
@@ -308,7 +334,7 @@
             this.lblInvestigador.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblInvestigador.Location = new System.Drawing.Point(23, 15);
             this.lblInvestigador.Name = "lblInvestigador";
-            this.lblInvestigador.Size = new System.Drawing.Size(208, 22);
+            this.lblInvestigador.Size = new System.Drawing.Size(246, 25);
             this.lblInvestigador.TabIndex = 3;
             this.lblInvestigador.Text = "Seleccionar investigador";
             // 
@@ -330,9 +356,19 @@
             this.lblMotivo.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMotivo.Location = new System.Drawing.Point(18, 23);
             this.lblMotivo.Name = "lblMotivo";
-            this.lblMotivo.Size = new System.Drawing.Size(148, 22);
+            this.lblMotivo.Size = new System.Drawing.Size(176, 25);
             this.lblMotivo.TabIndex = 2;
             this.lblMotivo.Text = "Motivo de reunion";
+            // 
+            // lstHoraFin
+            // 
+            this.lstHoraFin.FormattingEnabled = true;
+            this.lstHoraFin.ItemHeight = 20;
+            this.lstHoraFin.Location = new System.Drawing.Point(169, 87);
+            this.lstHoraFin.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.lstHoraFin.Name = "lstHoraFin";
+            this.lstHoraFin.Size = new System.Drawing.Size(123, 204);
+            this.lstHoraFin.TabIndex = 6;
             // 
             // FormLider
             // 
@@ -392,5 +428,8 @@
         private Guna.UI2.WinForms.Guna2HtmlLabel lblMotivo;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblInvestigador;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblHorasDisponibles;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblHoraFin;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblhorainicio;
+        private System.Windows.Forms.ListBox lstHoraFin;
     }
 }

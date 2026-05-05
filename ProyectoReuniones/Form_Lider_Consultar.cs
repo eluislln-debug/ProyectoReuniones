@@ -47,21 +47,21 @@ namespace ProyectoReuniones
             DataTable dt = new DataTable();
             dt.Columns.Add("ID_Internal"); // Columna oculta para MongoDB
             dt.Columns.Add("Fecha");
-            dt.Columns.Add("Hora");
+            dt.Columns.Add("Hora Inicio");
+            dt.Columns.Add("Hora Fin");    // ← columna nueva
             dt.Columns.Add("Motivo");
             dt.Columns.Add("Participantes");
 
             guna2DataGridView1.DataSource = dt;
 
             // Ajustes visuales
-            guna2DataGridView1.Columns["ID_Internal"].Visible = false; // Ocultamos el ID técnico
+            guna2DataGridView1.Columns["ID_Internal"].Visible = false;
             guna2DataGridView1.ColumnHeadersVisible = true;
             guna2DataGridView1.ColumnHeadersHeight = 40;
             guna2DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             guna2DataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             guna2DataGridView1.MultiSelect = false;
             guna2DataGridView1.ReadOnly = true;
-
             guna2DataGridView1.Refresh();
         }
 
@@ -72,22 +72,34 @@ namespace ProyectoReuniones
 
             foreach (var r in listaReuniones)
             {
-                // Mostramos cantidad de investigadores invitados como info extra para el líder
-                string infoParticipantes = r.NumerosInvestigadores != null ?
-                                           r.NumerosInvestigadores.Count.ToString() : "0";
+                // Buscar los nombres de los investigadores en la colección Usuarios
+                string nombresInvestigadores = "Ninguno";
+
+                if (r.NumerosInvestigadores != null && r.NumerosInvestigadores.Count > 0)
+                {
+                    // Traer los usuarios cuyos números estén en la lista de investigadores
+                    var investigadores = BD.Instancia.Usuarios
+                        .Find(u => r.NumerosInvestigadores.Contains(u.NumeroUsuario))
+                        .ToList();
+
+                    // Unir los nombres separados por coma
+                    nombresInvestigadores = string.Join(", ", investigadores.Select(u => u.NombreUsuario));
+                }
 
                 dt.Rows.Add(
-                    r.Id.ToString(), // El ObjectId de MongoDB
+                    r.Id.ToString(),
                     r.FechaReu.ToString("dd/MM/yyyy"),
                     r.HoraReu,
+                    r.HoraFinReu,
                     r.MotivoReu,
-                    infoParticipantes + " Investigadores"
+                    nombresInvestigadores  // Ahora muestra los nombres reales
                 );
             }
 
             if (listaReuniones.Count == 0)
             {
-                MessageBox.Show("No se encontraron registros.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("No se encontraron registros.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -216,6 +228,22 @@ namespace ProyectoReuniones
             FormLider fl = new FormLider(_usuarioActual);   
             fl.Show();
             this.Hide();
+        }
+
+        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            DialogResult confirm = MessageBox.Show(
+                "¿Estás seguro que deseas cerrar sesión?",
+                "Cerrar sesión",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirm == DialogResult.Yes)
+            {
+                Form1 formLogin = new Form1();
+                this.Hide();
+                formLogin.Show();
+            }
         }
     }
 }
