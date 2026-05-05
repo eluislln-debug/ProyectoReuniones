@@ -35,7 +35,7 @@ namespace ProyectoReuniones
             cbFiltro.Items.Clear();
             cbFiltro.Items.Add("Fecha");
             cbFiltro.Items.Add("Hora");
-            cbFiltro.Items.Add("Motivo");
+            cbFiltro.Items.Add("Investigador");
             cbFiltro.SelectedIndex = 0;
 
             // 3. Preparar el Grid
@@ -132,9 +132,10 @@ namespace ProyectoReuniones
             try
             {
                 string filtro = cbFiltro.SelectedItem.ToString();
+
                 var queryBase = BD.Instancia.Reuniones
-                                .Find(r => r.NumeroLider == _usuarioActual.NumeroUsuario)
-                                .ToList();
+                    .Find(r => r.NumeroLider == _usuarioActual.NumeroUsuario)
+                    .ToList();
 
                 List<Reunion> resultados = new List<Reunion>();
 
@@ -142,18 +143,43 @@ namespace ProyectoReuniones
                 {
                     case "Fecha":
                         if (DateTime.TryParse(valor, out DateTime f))
-                            resultados = queryBase.Where(r => r.FechaReu.Date == f.Date).ToList();
+                            resultados = queryBase
+                                .Where(r => r.FechaReu.Date == f.Date)
+                                .ToList();
                         break;
+
                     case "Hora":
-                        resultados = queryBase.Where(r => r.HoraReu.Contains(valor)).ToList();
+                        resultados = queryBase
+                            .Where(r => r.HoraReu != null && r.HoraReu.Contains(valor))
+                            .ToList();
                         break;
-                    case "Motivo":
-                        resultados = queryBase.Where(r => r.MotivoReu.IndexOf(valor, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+
+                    case "Investigador":
+
+                        // Buscar usuarios que coincidan con el nombre
+                        var investigadores = BD.Instancia.Usuarios
+                            .Find(u => u.NombreUsuario.ToLower().Contains(valor.ToLower()))
+                            .ToList();
+
+                        var idsInvestigadores = investigadores
+                            .Select(u => u.NumeroUsuario)
+                            .ToList();
+
+                        // Filtrar reuniones donde participen esos investigadores
+                        resultados = queryBase
+                            .Where(r => r.NumerosInvestigadores != null &&
+                                        r.NumerosInvestigadores.Any(id => idsInvestigadores.Contains(id)))
+                            .ToList();
+
                         break;
                 }
+
                 CargarGrid(resultados);
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void guna2Button2_Click(object sender, EventArgs e)

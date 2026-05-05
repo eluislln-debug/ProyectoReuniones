@@ -14,14 +14,14 @@ namespace ProyectoReuniones.Conexion
         private readonly IMongoDatabase _database;
 
         // ── Nombre de la base de datos en un solo lugar ──────────────
-        private const string NombreDB = "ReunionesDB";
+        private const string SeedLab = "ReunionesDB";
 
         public ConexionMongoDB()
         {
             try
             {
                 _client = new MongoClient("mongodb://localhost:27017/");
-                _database = _client.GetDatabase(NombreDB);
+                _database = _client.GetDatabase(SeedLab);
             }
             catch (Exception ex)
             {

@@ -174,11 +174,10 @@ namespace ProyectoReuniones
             List<(TimeSpan inicio, TimeSpan fin)> rangosOcupados = new List<(TimeSpan, TimeSpan)>();
 
             foreach (var r in reunionesDelDia)
-            {
-                TimeSpan ini = TimeSpan.Parse(r.HoraReu);
-                TimeSpan fin = TimeSpan.Parse(r.HoraFinReu);
-                rangosOcupados.Add((ini, fin));
-            }
+                if (!TimeSpan.TryParse(r.HoraFinReu, out TimeSpan fin))
+                {
+                    continue; // o maneja el error como prefieras
+                }
 
             // Agregar cada hora indicando disponibilidad
             foreach (string hora in _todasLasHoras)

@@ -97,7 +97,7 @@ namespace ProyectoReuniones
             dt.Columns.Add("Fecha");
             dt.Columns.Add("Hora");
             dt.Columns.Add("Motivo");
-            dt.Columns.Add("Líder"); // CAMBIADO: Antes decía "ID Líder"
+            dt.Columns.Add("Líder"); 
 
             guna2DataGridView1.DataSource = dt;
 
@@ -221,10 +221,10 @@ namespace ProyectoReuniones
 
             if (r == DialogResult.Yes)
             {
-                Form1 login = new Form1(); // 👈 tu formulario de login
+                Form1 login = new Form1(); 
                 login.Show();
 
-                this.Hide(); // 👈 oculta este formulario
+                this.Hide(); 
             }
         }
     }
