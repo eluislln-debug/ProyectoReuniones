@@ -14,7 +14,7 @@ namespace ProyectoReuniones.Conexion
         private readonly IMongoDatabase _database;
 
         // ── Nombre de la base de datos en un solo lugar ──────────────
-        private const string NombreDB = "SeedLab";
+        private const string NombreDB = "ReunionesDB";
 
         public ConexionMongoDB()
         {

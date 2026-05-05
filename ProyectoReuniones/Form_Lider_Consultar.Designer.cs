@@ -254,7 +254,7 @@
             this.guna2HtmlLabel5.ForeColor = System.Drawing.Color.Black;
             this.guna2HtmlLabel5.Location = new System.Drawing.Point(12, 23);
             this.guna2HtmlLabel5.Name = "guna2HtmlLabel5";
-            this.guna2HtmlLabel5.Size = new System.Drawing.Size(147, 25);
+            this.guna2HtmlLabel5.Size = new System.Drawing.Size(173, 30);
             this.guna2HtmlLabel5.TabIndex = 5;
             this.guna2HtmlLabel5.Text = "Consultar todo";
             this.guna2HtmlLabel5.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
@@ -266,7 +266,7 @@
             this.guna2HtmlLabel3.ForeColor = System.Drawing.Color.Black;
             this.guna2HtmlLabel3.Location = new System.Drawing.Point(12, 24);
             this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            this.guna2HtmlLabel3.Size = new System.Drawing.Size(149, 29);
+            this.guna2HtmlLabel3.Size = new System.Drawing.Size(185, 34);
             this.guna2HtmlLabel3.TabIndex = 4;
             this.guna2HtmlLabel3.Text = "Investigador: ";
             this.guna2HtmlLabel3.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
@@ -333,7 +333,7 @@
             this.guna2HtmlLabel4.ForeColor = System.Drawing.Color.Black;
             this.guna2HtmlLabel4.Location = new System.Drawing.Point(12, 25);
             this.guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            this.guna2HtmlLabel4.Size = new System.Drawing.Size(213, 25);
+            this.guna2HtmlLabel4.Size = new System.Drawing.Size(250, 30);
             this.guna2HtmlLabel4.TabIndex = 5;
             this.guna2HtmlLabel4.Text = "Consultas de campos";
             this.guna2HtmlLabel4.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
@@ -377,7 +377,7 @@
             this.guna2HtmlLabel1.ForeColor = System.Drawing.Color.Black;
             this.guna2HtmlLabel1.Location = new System.Drawing.Point(12, 20);
             this.guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            this.guna2HtmlLabel1.Size = new System.Drawing.Size(176, 25);
+            this.guna2HtmlLabel1.Size = new System.Drawing.Size(209, 30);
             this.guna2HtmlLabel1.TabIndex = 8;
             this.guna2HtmlLabel1.Text = "Cancelar Reunion";
             this.guna2HtmlLabel1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
@@ -406,7 +406,7 @@
             this.lblBienbenido.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.lblBienbenido.Location = new System.Drawing.Point(202, 12);
             this.lblBienbenido.Name = "lblBienbenido";
-            this.lblBienbenido.Size = new System.Drawing.Size(156, 34);
+            this.lblBienbenido.Size = new System.Drawing.Size(186, 39);
             this.lblBienbenido.TabIndex = 10;
             this.lblBienbenido.Text = "Bienvenido, ";
             this.lblBienbenido.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
