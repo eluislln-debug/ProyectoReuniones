@@ -180,7 +180,7 @@
             this.btnlimpiar.Name = "btnlimpiar";
             this.btnlimpiar.Size = new System.Drawing.Size(160, 36);
             this.btnlimpiar.TabIndex = 9;
-            this.btnlimpiar.Text = "Limpiar campos";
+            this.btnlimpiar.Text = "Nueva Reunion";
             this.btnlimpiar.Click += new System.EventHandler(this.btnlimpiar_Click);
             // 
             // btnGuardar

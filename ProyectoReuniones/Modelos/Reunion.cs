@@ -32,5 +32,8 @@ namespace ProyectoReuniones.Modelos
 
         [BsonElement("numerosInvestigadores")]
         public List<int> NumerosInvestigadores { get; set; }
+
+        [BsonElement("estadoReu")]
+        public string EstadoReu { get; set; }
     }
 }

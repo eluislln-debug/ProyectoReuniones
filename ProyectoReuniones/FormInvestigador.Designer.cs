@@ -46,9 +46,11 @@
             this.guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2GroupBox2 = new Guna.UI2.WinForms.Guna2GroupBox();
             this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
-            this.txtBusqueda = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtBusquedaHora = new Guna.UI2.WinForms.Guna2TextBox();
             this.guna2HtmlLabel4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.cbFiltro = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.calBusqueda = new System.Windows.Forms.MonthCalendar();
+            this.cbValorFiltro = new Guna.UI2.WinForms.Guna2ComboBox();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).BeginInit();
             this.guna2GroupBox1.SuspendLayout();
@@ -71,7 +73,7 @@
             this.guna2Panel1.Location = new System.Drawing.Point(0, 0);
             this.guna2Panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(188, 704);
+            this.guna2Panel1.Size = new System.Drawing.Size(188, 882);
             this.guna2Panel1.TabIndex = 1;
             // 
             // btnCerrarSesion
@@ -83,7 +85,7 @@
             this.btnCerrarSesion.FillColor = System.Drawing.Color.Red;
             this.btnCerrarSesion.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnCerrarSesion.ForeColor = System.Drawing.Color.White;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(0, 539);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(0, 546);
             this.btnCerrarSesion.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Size = new System.Drawing.Size(188, 36);
@@ -110,7 +112,7 @@
             this.lblBienbenido.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.lblBienbenido.Location = new System.Drawing.Point(194, 12);
             this.lblBienbenido.Name = "lblBienbenido";
-            this.lblBienbenido.Size = new System.Drawing.Size(156, 34);
+            this.lblBienbenido.Size = new System.Drawing.Size(186, 39);
             this.lblBienbenido.TabIndex = 2;
             this.lblBienbenido.Text = "Bienvenido, ";
             this.lblBienbenido.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
@@ -121,7 +123,7 @@
             this.guna2HtmlLabel2.Font = new System.Drawing.Font("Arial Rounded MT Bold", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.guna2HtmlLabel2.Location = new System.Drawing.Point(6, 12);
             this.guna2HtmlLabel2.Name = "guna2HtmlLabel2";
-            this.guna2HtmlLabel2.Size = new System.Drawing.Size(115, 29);
+            this.guna2HtmlLabel2.Size = new System.Drawing.Size(143, 34);
             this.guna2HtmlLabel2.TabIndex = 4;
             this.guna2HtmlLabel2.Text = "Semillero: ";
             this.guna2HtmlLabel2.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
@@ -140,7 +142,7 @@
             this.guna2GroupBox1.ForeColor = System.Drawing.Color.Black;
             this.guna2GroupBox1.Location = new System.Drawing.Point(194, 65);
             this.guna2GroupBox1.Name = "guna2GroupBox1";
-            this.guna2GroupBox1.Size = new System.Drawing.Size(785, 626);
+            this.guna2GroupBox1.Size = new System.Drawing.Size(910, 804);
             this.guna2GroupBox1.TabIndex = 3;
             // 
             // guna2DataGridView1
@@ -166,12 +168,12 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.guna2DataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
             this.guna2DataGridView1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.guna2DataGridView1.Location = new System.Drawing.Point(12, 298);
+            this.guna2DataGridView1.Location = new System.Drawing.Point(12, 481);
             this.guna2DataGridView1.Name = "guna2DataGridView1";
             this.guna2DataGridView1.RowHeadersVisible = false;
             this.guna2DataGridView1.RowHeadersWidth = 51;
             this.guna2DataGridView1.RowTemplate.Height = 24;
-            this.guna2DataGridView1.Size = new System.Drawing.Size(742, 313);
+            this.guna2DataGridView1.Size = new System.Drawing.Size(880, 313);
             this.guna2DataGridView1.TabIndex = 9;
             this.guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -208,9 +210,9 @@
             this.guna2GroupBox3.CustomBorderThickness = new System.Windows.Forms.Padding(40, 0, 0, 0);
             this.guna2GroupBox3.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2GroupBox3.ForeColor = System.Drawing.Color.Black;
-            this.guna2GroupBox3.Location = new System.Drawing.Point(12, 197);
+            this.guna2GroupBox3.Location = new System.Drawing.Point(12, 399);
             this.guna2GroupBox3.Name = "guna2GroupBox3";
-            this.guna2GroupBox3.Size = new System.Drawing.Size(754, 76);
+            this.guna2GroupBox3.Size = new System.Drawing.Size(880, 76);
             this.guna2GroupBox3.TabIndex = 8;
             // 
             // guna2Button2
@@ -222,7 +224,7 @@
             this.guna2Button2.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.guna2Button2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2Button2.ForeColor = System.Drawing.Color.White;
-            this.guna2Button2.Location = new System.Drawing.Point(553, 23);
+            this.guna2Button2.Location = new System.Drawing.Point(658, 23);
             this.guna2Button2.Name = "guna2Button2";
             this.guna2Button2.Size = new System.Drawing.Size(180, 36);
             this.guna2Button2.TabIndex = 7;
@@ -236,7 +238,7 @@
             this.guna2HtmlLabel5.ForeColor = System.Drawing.Color.Black;
             this.guna2HtmlLabel5.Location = new System.Drawing.Point(12, 23);
             this.guna2HtmlLabel5.Name = "guna2HtmlLabel5";
-            this.guna2HtmlLabel5.Size = new System.Drawing.Size(147, 25);
+            this.guna2HtmlLabel5.Size = new System.Drawing.Size(173, 30);
             this.guna2HtmlLabel5.TabIndex = 5;
             this.guna2HtmlLabel5.Text = "Consultar todo";
             this.guna2HtmlLabel5.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
@@ -246,9 +248,9 @@
             this.guna2HtmlLabel3.BackColor = System.Drawing.Color.Transparent;
             this.guna2HtmlLabel3.Font = new System.Drawing.Font("Arial Rounded MT Bold", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.guna2HtmlLabel3.ForeColor = System.Drawing.Color.Black;
-            this.guna2HtmlLabel3.Location = new System.Drawing.Point(12, 24);
+            this.guna2HtmlLabel3.Location = new System.Drawing.Point(24, 3);
             this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            this.guna2HtmlLabel3.Size = new System.Drawing.Size(149, 29);
+            this.guna2HtmlLabel3.Size = new System.Drawing.Size(185, 34);
             this.guna2HtmlLabel3.TabIndex = 4;
             this.guna2HtmlLabel3.Text = "Investigador: ";
             this.guna2HtmlLabel3.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
@@ -258,17 +260,19 @@
             this.guna2GroupBox2.BackColor = System.Drawing.Color.White;
             this.guna2GroupBox2.BorderColor = System.Drawing.Color.Black;
             this.guna2GroupBox2.BorderRadius = 15;
+            this.guna2GroupBox2.Controls.Add(this.cbValorFiltro);
+            this.guna2GroupBox2.Controls.Add(this.calBusqueda);
             this.guna2GroupBox2.Controls.Add(this.guna2Button1);
-            this.guna2GroupBox2.Controls.Add(this.txtBusqueda);
+            this.guna2GroupBox2.Controls.Add(this.txtBusquedaHora);
             this.guna2GroupBox2.Controls.Add(this.guna2HtmlLabel4);
             this.guna2GroupBox2.Controls.Add(this.cbFiltro);
             this.guna2GroupBox2.CustomBorderColor = System.Drawing.Color.Transparent;
             this.guna2GroupBox2.CustomBorderThickness = new System.Windows.Forms.Padding(40, 0, 0, 0);
             this.guna2GroupBox2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2GroupBox2.ForeColor = System.Drawing.Color.Black;
-            this.guna2GroupBox2.Location = new System.Drawing.Point(12, 68);
+            this.guna2GroupBox2.Location = new System.Drawing.Point(12, 43);
             this.guna2GroupBox2.Name = "guna2GroupBox2";
-            this.guna2GroupBox2.Size = new System.Drawing.Size(754, 114);
+            this.guna2GroupBox2.Size = new System.Drawing.Size(569, 350);
             this.guna2GroupBox2.TabIndex = 4;
             // 
             // guna2Button1
@@ -280,41 +284,41 @@
             this.guna2Button1.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.guna2Button1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2Button1.ForeColor = System.Drawing.Color.White;
-            this.guna2Button1.Location = new System.Drawing.Point(553, 56);
+            this.guna2Button1.Location = new System.Drawing.Point(348, 219);
             this.guna2Button1.Name = "guna2Button1";
             this.guna2Button1.Size = new System.Drawing.Size(180, 36);
             this.guna2Button1.TabIndex = 7;
             this.guna2Button1.Text = "Consultar parametros";
             this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click);
             // 
-            // txtBusqueda
+            // txtBusquedaHora
             // 
-            this.txtBusqueda.BorderRadius = 15;
-            this.txtBusqueda.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtBusqueda.DefaultText = "";
-            this.txtBusqueda.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.txtBusqueda.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.txtBusqueda.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtBusqueda.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtBusqueda.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtBusqueda.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtBusqueda.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtBusqueda.Location = new System.Drawing.Point(300, 56);
-            this.txtBusqueda.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtBusqueda.Name = "txtBusqueda";
-            this.txtBusqueda.PlaceholderText = "";
-            this.txtBusqueda.SelectedText = "";
-            this.txtBusqueda.Size = new System.Drawing.Size(207, 36);
-            this.txtBusqueda.TabIndex = 6;
+            this.txtBusquedaHora.BorderRadius = 15;
+            this.txtBusquedaHora.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtBusquedaHora.DefaultText = "";
+            this.txtBusquedaHora.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtBusquedaHora.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtBusquedaHora.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtBusquedaHora.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtBusquedaHora.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtBusquedaHora.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtBusquedaHora.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtBusquedaHora.Location = new System.Drawing.Point(337, 146);
+            this.txtBusquedaHora.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtBusquedaHora.Name = "txtBusquedaHora";
+            this.txtBusquedaHora.PlaceholderText = "";
+            this.txtBusquedaHora.SelectedText = "";
+            this.txtBusquedaHora.Size = new System.Drawing.Size(207, 36);
+            this.txtBusquedaHora.TabIndex = 6;
             // 
             // guna2HtmlLabel4
             // 
             this.guna2HtmlLabel4.BackColor = System.Drawing.Color.Transparent;
             this.guna2HtmlLabel4.Font = new System.Drawing.Font("Arial Rounded MT Bold", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.guna2HtmlLabel4.ForeColor = System.Drawing.Color.Black;
-            this.guna2HtmlLabel4.Location = new System.Drawing.Point(12, 25);
+            this.guna2HtmlLabel4.Location = new System.Drawing.Point(12, 3);
             this.guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            this.guna2HtmlLabel4.Size = new System.Drawing.Size(213, 25);
+            this.guna2HtmlLabel4.Size = new System.Drawing.Size(250, 30);
             this.guna2HtmlLabel4.TabIndex = 5;
             this.guna2HtmlLabel4.Text = "Consultas de campos";
             this.guna2HtmlLabel4.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
@@ -330,17 +334,40 @@
             this.cbFiltro.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cbFiltro.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
             this.cbFiltro.ItemHeight = 30;
-            this.cbFiltro.Location = new System.Drawing.Point(12, 56);
+            this.cbFiltro.Location = new System.Drawing.Point(315, 61);
             this.cbFiltro.Name = "cbFiltro";
             this.cbFiltro.Size = new System.Drawing.Size(241, 36);
             this.cbFiltro.TabIndex = 0;
+            this.cbFiltro.SelectedIndexChanged += new System.EventHandler(this.cbFiltro_SelectedIndexChanged);
+            // 
+            // calBusqueda
+            // 
+            this.calBusqueda.Location = new System.Drawing.Point(12, 61);
+            this.calBusqueda.Name = "calBusqueda";
+            this.calBusqueda.TabIndex = 8;
+            // 
+            // cbValorFiltro
+            // 
+            this.cbValorFiltro.BackColor = System.Drawing.Color.Transparent;
+            this.cbValorFiltro.BorderRadius = 15;
+            this.cbValorFiltro.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbValorFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbValorFiltro.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cbValorFiltro.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cbValorFiltro.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cbValorFiltro.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
+            this.cbValorFiltro.ItemHeight = 30;
+            this.cbValorFiltro.Location = new System.Drawing.Point(315, 103);
+            this.cbValorFiltro.Name = "cbValorFiltro";
+            this.cbValorFiltro.Size = new System.Drawing.Size(241, 36);
+            this.cbValorFiltro.TabIndex = 9;
             // 
             // FormInvestigador
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(987, 703);
+            this.ClientSize = new System.Drawing.Size(1116, 871);
             this.Controls.Add(this.guna2GroupBox1);
             this.Controls.Add(this.lblBienbenido);
             this.Controls.Add(this.guna2Panel1);
@@ -375,11 +402,13 @@
         private Guna.UI2.WinForms.Guna2GroupBox guna2GroupBox2;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel4;
         private Guna.UI2.WinForms.Guna2ComboBox cbFiltro;
-        private Guna.UI2.WinForms.Guna2TextBox txtBusqueda;
+        private Guna.UI2.WinForms.Guna2TextBox txtBusquedaHora;
         private Guna.UI2.WinForms.Guna2GroupBox guna2GroupBox3;
         private Guna.UI2.WinForms.Guna2Button guna2Button2;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel5;
         private Guna.UI2.WinForms.Guna2Button guna2Button1;
         private Guna.UI2.WinForms.Guna2DataGridView guna2DataGridView1;
+        private System.Windows.Forms.MonthCalendar calBusqueda;
+        private Guna.UI2.WinForms.Guna2ComboBox cbValorFiltro;
     }
 }

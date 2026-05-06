@@ -63,6 +63,16 @@ namespace ProyectoReuniones.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap lapices {
+            get {
+                object obj = ResourceManager.GetObject("lapices", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap LLave_Proyecto {
             get {
                 object obj = ResourceManager.GetObject("LLave-Proyecto", resourceCulture);
@@ -76,6 +86,16 @@ namespace ProyectoReuniones.Properties {
         internal static System.Drawing.Bitmap Proyecto_imagen {
             get {
                 object obj = ResourceManager.GetObject("Proyecto-imagen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap x {
+            get {
+                object obj = ResourceManager.GetObject("x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -27,14 +27,15 @@ namespace ProyectoReuniones
             InitializeComponent();
             // Guardamos el usuario para usarlo en toda la ventana
             _usuarioActual = usuario;
-            txtBusqueda.PlaceholderText = "Ingrese valor de busqueda...";
+            txtBusquedaHora.PlaceholderText = "Ingrese valor de busqueda...";
             lblBienbenido.Text = "Bienvenido, " + _usuarioActual.NombreUsuario;
 
             // Configurar el ComboBox de filtros
             cbFiltro.Items.Clear();
             cbFiltro.Items.Add("Fecha");
+            cbFiltro.Items.Add("Mes");
+            cbFiltro.Items.Add("Año");
             cbFiltro.Items.Add("Hora");
-            cbFiltro.Items.Add("Investigador"); // 👈 nuevo
             cbFiltro.SelectedIndex = 0;
 
             ConfigurarEstructuraGrid();
@@ -59,57 +60,105 @@ namespace ProyectoReuniones
 
         private void CargarGrid(List<Reunion> listaReuniones)
         {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("Fecha");
-            dt.Columns.Add("Hora");
-            dt.Columns.Add("Motivo");
-            dt.Columns.Add("Líder"); // Cambiado de ID Líder a Líder
+            DataTable dt = (DataTable)guna2DataGridView1.DataSource;
+            dt.Rows.Clear();
 
             foreach (var r in listaReuniones)
             {
-                // Buscamos el nombre del líder en la base de datos usando el NumeroLider de la reunión
+                // Buscar nombre del líder
                 var lider = BD.Instancia.Usuarios
                     .Find(u => u.NumeroUsuario == r.NumeroLider)
                     .FirstOrDefault();
 
                 string nombreLider = lider != null ? lider.NombreUsuario : "No asignado";
 
+                // Calcular estado automáticamente
+                string estado = CalcularEstado(r);
+
                 dt.Rows.Add(
-                    r.FechaReu.ToString("dd/MM/yyyy"),
+                    r.FechaReu.ToLocalTime().ToString("dd/MM/yyyy"),
                     r.HoraReu,
+                    r.HoraFinReu,
+                    estado,
                     r.MotivoReu,
                     nombreLider
                 );
             }
 
-            guna2DataGridView1.DataSource = dt;
+            // Colorear filas según estado
+            foreach (DataGridViewRow fila in guna2DataGridView1.Rows)
+            {
+                string estado = fila.Cells["Estado"].Value?.ToString();
 
-            // Validación visual: si no hay resultados, avisar al usuario
+                switch (estado)
+                {
+                    case "Pendiente":
+                        fila.DefaultCellStyle.BackColor = Color.FromArgb(219, 234, 254);
+                        fila.DefaultCellStyle.ForeColor = Color.FromArgb(30, 64, 175);
+                        break;
+                    case "En curso":
+                        fila.DefaultCellStyle.BackColor = Color.FromArgb(220, 252, 231);
+                        fila.DefaultCellStyle.ForeColor = Color.FromArgb(22, 101, 52);
+                        break;
+                    case "Finalizada":
+                        fila.DefaultCellStyle.BackColor = Color.FromArgb(229, 231, 235);
+                        fila.DefaultCellStyle.ForeColor = Color.FromArgb(75, 85, 99);
+                        break;
+                    case "Reprogramada":
+                        fila.DefaultCellStyle.BackColor = Color.FromArgb(254, 243, 199);
+                        fila.DefaultCellStyle.ForeColor = Color.FromArgb(146, 64, 14);
+                        break;
+                    case "Cancelada":
+                        fila.DefaultCellStyle.BackColor = Color.FromArgb(254, 226, 226);
+                        fila.DefaultCellStyle.ForeColor = Color.FromArgb(153, 27, 27);
+                        break;
+                }
+            }
+
             if (listaReuniones.Count == 0)
             {
-                MessageBox.Show("No se encontraron reuniones con los criterios seleccionados.",
-                                "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("No se encontraron reuniones.",
+                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        // ── Calcula el estado automático de una reunión ───────────────
+        private string CalcularEstado(Reunion r)
+        {
+            if (r.EstadoReu == "Cancelada") return "Cancelada";
+            if (r.EstadoReu == "Reprogramada") return "Reprogramada";
+
+            DateTime ahora = DateTime.Now;
+            DateTime fechaReu = r.FechaReu.ToLocalTime().Date;
+
+            TimeSpan horaInicio = TimeSpan.Parse(r.HoraReu);
+            TimeSpan horaFin = TimeSpan.Parse(r.HoraFinReu);
+
+            DateTime inicioCompleto = fechaReu.Add(horaInicio);
+            DateTime finCompleto = fechaReu.Add(horaFin);
+
+            if (ahora < inicioCompleto) return "Pendiente";
+            if (ahora < finCompleto) return "En curso";
+            return "Finalizada";
+        }
+
         private void ConfigurarEstructuraGrid()
         {
             DataTable dt = new DataTable();
             dt.Columns.Add("Fecha");
-            dt.Columns.Add("Hora");
+            dt.Columns.Add("Hora Inicio");
+            dt.Columns.Add("Hora Fin");
+            dt.Columns.Add("Estado");
             dt.Columns.Add("Motivo");
-            dt.Columns.Add("Líder"); 
+            dt.Columns.Add("Líder");
 
             guna2DataGridView1.DataSource = dt;
 
-            // Estética del Grid
             guna2DataGridView1.ColumnHeadersVisible = true;
             guna2DataGridView1.ColumnHeadersHeight = 40;
             guna2DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-            // Evitar que el usuario edite las celdas directamente
             guna2DataGridView1.ReadOnly = true;
             guna2DataGridView1.AllowUserToAddRows = false;
-
             guna2DataGridView1.Refresh();
         }
         private void guna2HtmlLabel3_Click(object sender, EventArgs e)
@@ -119,72 +168,53 @@ namespace ProyectoReuniones
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            string valor = txtBusqueda.Text.Trim();
-
-            if (string.IsNullOrWhiteSpace(valor) || valor == "Ingrese valor de busqueda...")
-            {
-                MessageBox.Show("Por favor, ingrese un término de búsqueda válido.",
-                                "Campo Requerido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtBusqueda.Focus();
-                return;
-            }
-
             try
             {
                 string filtro = cbFiltro.SelectedItem.ToString();
 
-                // Solo reuniones donde participa el investigador actual
-                var query = BD.Instancia.Reuniones
-                    .Find(r => r.NumerosInvestigadores.Contains(_usuarioActual.NumeroUsuario));
+                // Para investigador buscar donde aparece en la lista de participantes
+                var queryBase = BD.Instancia.Reuniones
+                    .Find(r => r.NumerosInvestigadores.Contains(_usuarioActual.NumeroUsuario))
+                    .ToList();
 
-                var todasMisReuniones = query.ToList();
                 List<Reunion> resultados = new List<Reunion>();
 
                 switch (filtro)
                 {
                     case "Fecha":
-                        if (DateTime.TryParse(valor, out DateTime fechaBusqueda))
-                        {
-                            resultados = todasMisReuniones
-                                .Where(r => r.FechaReu.Date == fechaBusqueda.Date)
-                                .ToList();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Formato de fecha incorrecto. Use DD/MM/AAAA");
-                            return;
-                        }
+                        // Buscar por fecha seleccionada en el calendario
+                        DateTime fechaBusqueda = calBusqueda.SelectionStart.Date;
+                        resultados = queryBase
+                            .Where(r => r.FechaReu.ToLocalTime().Date == fechaBusqueda)
+                            .ToList();
+                        break;
+
+                    case "Mes":
+                        int mesBusqueda = int.Parse(cbValorFiltro.SelectedItem.ToString().Split('-')[0].Trim());
+                        resultados = queryBase
+                            .Where(r => r.FechaReu.ToLocalTime().Month == mesBusqueda)
+                            .ToList();
+                        break;
+
+                    case "Año":
+                        int anioBusqueda = int.Parse(cbValorFiltro.SelectedItem.ToString());
+                        resultados = queryBase
+                            .Where(r => r.FechaReu.ToLocalTime().Year == anioBusqueda)
+                            .ToList();
                         break;
 
                     case "Hora":
-                        resultados = todasMisReuniones
-                            .Where(r => r.HoraReu != null && r.HoraReu.Contains(valor))
-                            .ToList();
-                        break;
-
-                    case "Investigador":
-
-                        // 🔥 Buscar usuarios por nombre
-                        var usuarios = BD.Instancia.Usuarios
-                            .Find(u => u.NombreUsuario.ToLower().Contains(valor.ToLower()))
-                            .ToList();
-
-                        List<int> numerosUsuarios = new List<int>();
-
-                        foreach (var u in usuarios)
+                        // Validar que ingresó algo
+                        if (string.IsNullOrWhiteSpace(txtBusquedaHora.Text))
                         {
-                            numerosUsuarios.Add(u.NumeroUsuario);
+                            MessageBox.Show("Ingresa una hora para buscar.",
+                                "Campo vacío", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
                         }
-
-                        // 🔥 Filtrar reuniones donde esté ese investigador
-                        resultados = todasMisReuniones
-                            .Where(r => r.NumerosInvestigadores != null &&
-                                        r.NumerosInvestigadores.Any(n => numerosUsuarios.Contains(n)))
+                        string horaBusqueda = txtBusquedaHora.Text.Trim();
+                        resultados = queryBase
+                            .Where(r => r.HoraReu != null && r.HoraReu.Contains(horaBusqueda))
                             .ToList();
-                        break;
-
-                    default:
-                        resultados = todasMisReuniones;
                         break;
                 }
 
@@ -192,7 +222,8 @@ namespace ProyectoReuniones
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Error: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -225,6 +256,59 @@ namespace ProyectoReuniones
                 login.Show();
 
                 this.Hide(); 
+            }
+        }
+
+        private void cbFiltro_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Ocultar todos los controles de búsqueda
+            calBusqueda.Visible = false;
+            txtBusquedaHora.Visible = false;
+            cbValorFiltro.Visible = false;
+
+            string filtro = cbFiltro.SelectedItem.ToString();
+
+            switch (filtro)
+            {
+                case "Fecha":
+                    // Mostrar calendario
+                    calBusqueda.Visible = true;
+                    calBusqueda.MinDate = DateTime.Today;
+                    calBusqueda.SelectionStart = DateTime.Today;
+                    break;
+
+                case "Mes":
+                    // Mostrar combobox con meses desde el actual
+                    cbValorFiltro.Visible = true;
+                    cbValorFiltro.Items.Clear();
+
+                    for (int mes = DateTime.Today.Month; mes <= 12; mes++)
+                    {
+                        // Nombre del mes en español
+                        string nombreMes = new DateTime(DateTime.Today.Year, mes, 1)
+                            .ToString("MMMM", new System.Globalization.CultureInfo("es-CO"));
+                        cbValorFiltro.Items.Add($"{mes} - {nombreMes}");
+                    }
+                    cbValorFiltro.SelectedIndex = 0;
+                    break;
+
+                case "Año":
+                    // Mostrar combobox con años desde el actual
+                    cbValorFiltro.Visible = true;
+                    cbValorFiltro.Items.Clear();
+
+                    for (int anio = DateTime.Today.Year; anio <= DateTime.Today.Year + 5; anio++)
+                        cbValorFiltro.Items.Add(anio.ToString());
+
+                    cbValorFiltro.SelectedIndex = 0;
+                    break;
+
+                case "Hora":
+                    // Mostrar textbox para escribir la hora
+                    txtBusquedaHora.Visible = true;
+                    txtBusquedaHora.Text = "";
+                    txtBusquedaHora.PlaceholderText = "Ej: 08:00";
+                    break;
             }
         }
     }

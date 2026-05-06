@@ -20,6 +20,9 @@ namespace ProyectoReuniones
        
         private bool _cargandoHoras = false;
 
+        // ── Reunión que se está editando (null = modo registro normal) ──
+        private Reunion _reunionEditando = null;
+
         public FormLider(Usuario usuario)
         {
             InitializeComponent();
@@ -81,8 +84,11 @@ namespace ProyectoReuniones
             txtMotivo.FocusedState.FillColor = Color.White;
         }
 
-        public FormLider()
+        // ── Constructor para modo edición ────────────────────────────
+        public FormLider(Usuario usuario, Reunion reunionEditar) : this(usuario)
         {
+            // Aquí sí existe reunionEditar porque es parámetro de este constructor
+            _reunionEditando = reunionEditar;
         }
 
         // Método auxiliar para no repetir código en los títulos de las secciones
@@ -117,13 +123,10 @@ namespace ProyectoReuniones
                 ? "Semillero: " + semillero.NombreSemillero
                 : "Semillero: No encontrado";
 
-            // Activar bandera para evitar validaciones
             _iniciandoForm = true;
-
             DateTime ahora = DateTime.Now;
-            dtpHoraInicio.Value = ahora;                // Hora actual
-            dtpHoraFin.Value = ahora.AddMinutes(60);    // Una hora más
-
+            dtpHoraInicio.Value = ahora;
+            dtpHoraFin.Value = ahora.AddMinutes(60);
             _iniciandoForm = false;
 
             CargarInvestigadores(
@@ -131,8 +134,52 @@ namespace ProyectoReuniones
                 dtpHoraInicio.Value.ToString("HH:mm"),
                 dtpHoraFin.Value.ToString("HH:mm")
             );
+
+            // Si viene con una reunión a editar cargamos sus datos
+            if (_reunionEditando != null)
+            {
+                this.Text = "Editar Reunión";
+                btnGuardar.Text = "Guardar cambios";
+
+                _iniciandoForm = true;
+                calendario.SelectionStart = _reunionEditando.FechaReu.Date;
+                dtpHoraInicio.Value = DateTime.Today.Date.Add(TimeSpan.Parse(_reunionEditando.HoraReu));
+                dtpHoraFin.Value = DateTime.Today.Date.Add(TimeSpan.Parse(_reunionEditando.HoraFinReu));
+                _iniciandoForm = false;
+
+                txtMotivo.Text = _reunionEditando.MotivoReu;
+
+                // En modo edición cargar TODOS los investigadores del semillero
+                // sin filtrar por ocupados para poder ver y desmarcar los actuales
+                CargarInvestigadoresModoEdicion();
+            }
         }
 
+        // ── Carga investigadores en modo edición ──────────────────────
+        // Muestra todos los del semillero y marca los que ya estaban
+        private void CargarInvestigadoresModoEdicion()
+        {
+            lstInvestigadores.Items.Clear();
+
+            // Traer todos los investigadores del semillero sin filtrar
+            var todosLosInvestigadores = BD.Instancia.Usuarios
+                .Find(u => u.NumeroSemillero == _usuarioActual.NumeroSemillero
+                        && u.TipoUsuario == "Investigador")
+                .ToList();
+
+            foreach (var inv in todosLosInvestigadores)
+            {
+                // Marcar los que ya estaban en la reunión
+                bool estaba = _reunionEditando.NumerosInvestigadores != null &&
+                              _reunionEditando.NumerosInvestigadores.Contains(inv.NumeroUsuario);
+
+                lstInvestigadores.Items.Add(inv.NombreUsuario, estaba);
+            }
+
+            // Guardar lista completa en Tag
+            lstInvestigadores.Tag = todosLosInvestigadores;
+        }
+        
         private void CargarInvestigadores(DateTime? fecha = null, string horaInicio = null, string horaFin = null)
         {
             lstInvestigadores.Items.Clear();
@@ -304,18 +351,17 @@ namespace ProyectoReuniones
                 return;
             }
 
-            // Obtener horas dinámicas desde los DateTimePicker
             string horaInicio = dtpHoraInicio.Value.ToString("HH:mm");
             string horaFin = dtpHoraFin.Value.ToString("HH:mm");
 
             TimeSpan tsInicio = TimeSpan.Parse(horaInicio);
             TimeSpan tsFin = TimeSpan.Parse(horaFin);
 
-            // Validar que la hora fin sea al menos 30 minutos después
-            if (tsFin <= tsInicio.Add(TimeSpan.FromMinutes(30)))
+            // Validar que hora fin sea posterior a hora inicio
+            if (tsFin <= tsInicio)
             {
                 MessageBox.Show(
-                    "La hora final debe ser al menos 30 minutos posterior a la hora de inicio.",
+                    "La hora final debe ser posterior a la hora de inicio.",
                     "Hora no válida",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -329,12 +375,14 @@ namespace ProyectoReuniones
             foreach (int indice in lstInvestigadores.CheckedIndices)
                 numerosSeleccionados.Add(listaInvestigadores[indice].NumeroUsuario);
 
-            // Validar solapamiento con reuniones existentes
-            DateTime inicioDia = fechaSeleccionada.Date;
-            DateTime finDia = inicioDia.AddDays(1);
+            // Traer reuniones del día EXCEPTO la que se está editando
+            DateTime inicioDia = fechaSeleccionada.ToUniversalTime();
+            DateTime finDia = fechaSeleccionada.AddDays(1).ToUniversalTime();
 
             var reunionesDelDia = BD.Instancia.Reuniones
-                .Find(r => r.FechaReu >= inicioDia && r.FechaReu < finDia)
+                .Find(r => r.FechaReu >= inicioDia
+                        && r.FechaReu < finDia
+                        && (_reunionEditando == null || r.Id != _reunionEditando.Id))
                 .ToList();
 
             // Validar solapamiento del líder
@@ -384,44 +432,96 @@ namespace ProyectoReuniones
                 }
             }
 
-            // Guardar reunión
-            Reunion nuevaReunion = new Reunion
+            if (_reunionEditando == null)
             {
-                FechaReu = fechaSeleccionada,
-                HoraReu = horaInicio,
-                HoraFinReu = horaFin,
-                MotivoReu = txtMotivo.Text.Trim(),
-                NumeroLider = _usuarioActual.NumeroUsuario,
-                NumerosInvestigadores = numerosSeleccionados
-            };
+                // ── Modo registro ─────────────────────────────────────────
+                Reunion nuevaReunion = new Reunion
+                {
+                    FechaReu = fechaSeleccionada.ToUniversalTime(),
+                    HoraReu = horaInicio,
+                    HoraFinReu = horaFin,
+                    MotivoReu = txtMotivo.Text.Trim(),
+                    NumeroLider = _usuarioActual.NumeroUsuario,
+                    NumerosInvestigadores = numerosSeleccionados
+                };
 
-            BD.Instancia.Reuniones.InsertOne(nuevaReunion);
+                BD.Instancia.Reuniones.InsertOne(nuevaReunion);
 
-            MessageBox.Show(
-                $"Reunión guardada exitosamente.\n" +
-                $"Fecha: {fechaSeleccionada:dd/MM/yyyy}\n" +
-                $"Horario: {horaInicio} - {horaFin}",
-                "Reunión programada",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+                MessageBox.Show(
+                    $"Reunión guardada exitosamente.\n" +
+                    $"Fecha: {fechaSeleccionada:dd/MM/yyyy}\n" +
+                    $"Horario: {horaInicio} - {horaFin}",
+                    "Reunión programada",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
-            // Limpiar después de guardar
-            btnlimpiar_Click(sender, e);
+                btnlimpiar_Click(sender, e);
+            }
+            else
+            {
+                // ── Modo edición ──────────────────────────────────────────
+                bool fueReprogramada = _reunionEditando.FechaReu.Date != fechaSeleccionada.Date ||
+                                       _reunionEditando.HoraReu != horaInicio ||
+                                       _reunionEditando.HoraFinReu != horaFin;
+
+                string nuevoEstado = fueReprogramada ? "Reprogramada" : _reunionEditando.EstadoReu;
+
+                var filtroEdicion = Builders<Reunion>.Filter.Eq(r => r.Id, _reunionEditando.Id);
+                var actualizacionEdicion = Builders<Reunion>.Update
+                    .Set(r => r.FechaReu, fechaSeleccionada.ToUniversalTime())
+                    .Set(r => r.HoraReu, horaInicio)
+                    .Set(r => r.HoraFinReu, horaFin)
+                    .Set(r => r.MotivoReu, txtMotivo.Text.Trim())
+                    .Set(r => r.NumerosInvestigadores, numerosSeleccionados)
+                    .Set(r => r.EstadoReu, nuevoEstado);
+
+                BD.Instancia.Reuniones.UpdateOne(filtroEdicion, actualizacionEdicion);
+
+                MessageBox.Show(
+                    "Reunión actualizada correctamente.",
+                    "Éxito",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                this.Close();
+            }
         }
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
             DialogResult confirm = MessageBox.Show(
-                "¿Estás seguro que deseas cerrar sesión?",
-                "Cerrar sesión",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+         "¿Estás seguro que deseas cerrar sesión?",
+         "Cerrar sesión",
+         MessageBoxButtons.YesNo,
+         MessageBoxIcon.Question);
 
             if (confirm == DialogResult.Yes)
             {
                 Form1 formLogin = new Form1();
-                this.Hide();
+
+                // Si está en modo edición solo cerrar este form
+                // el Form_Lider_Consultar ya está abierto debajo
+                if (_reunionEditando != null)
+                {
+                    // Cerrar también el form de consultas que está debajo
+                    foreach (Form f in Application.OpenForms.Cast<Form>().ToList())
+                    {
+                        if (f is Form_Lider_Consultar)
+                            f.Close();
+                    }
+                }
+                else
+                {
+                    // Cerrar el form de consultas si está abierto
+                    foreach (Form f in Application.OpenForms.Cast<Form>().ToList())
+                    {
+                        if (f is Form_Lider_Consultar)
+                            f.Close();
+                    }
+                }
+
                 formLogin.Show();
+                this.Close();
             }
         }
 
@@ -459,6 +559,25 @@ namespace ProyectoReuniones
 
         private void btnVerReuniones_Click(object sender, EventArgs e)
         {
+            // Si está en modo edición preguntar si desea descartar cambios
+            if (_reunionEditando != null)
+            {
+                DialogResult confirm = MessageBox.Show(
+                    "¿Deseas descartar los cambios y volver a consultas?",
+                    "Descartar cambios",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (confirm == DialogResult.No)
+                    return;
+
+                // Si dice sí simplemente cerrar este form
+                // el Form_Lider_Consultar ya está abierto debajo (ShowDialog)
+                this.Close();
+                return;
+            }
+
+            // Modo normal — abrir consultas
             Form_Lider_Consultar flc = new Form_Lider_Consultar(_usuarioActual);
             flc.Show();
             this.Hide();
@@ -471,64 +590,70 @@ namespace ProyectoReuniones
         {
             if (_iniciandoForm) return;
 
-            DateTime ahora = DateTime.Now;
-
-            // Validar que no sea una hora pasada si es hoy
-            if (calendario.SelectionStart.Date == DateTime.Today &&
-                dtpHoraInicio.Value < ahora)
+            // Solo validar hora si es hoy
+            if (calendario.SelectionStart.Date == DateTime.Today)
             {
-                MessageBox.Show(
-                    $"La hora {dtpHoraInicio.Value:HH:mm} ya pasó.\n" +
-                    $"La hora actual es {ahora:HH:mm}.",
-                    "Hora no válida",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                // No permitir la hora actual ni horas anteriores
+                // Mínimo debe ser hora actual + 1
+                if (dtpHoraInicio.Value.Hour <= DateTime.Now.Hour)
+                {
+                    MessageBox.Show(
+                        $"No puedes programar una reunión a las {dtpHoraInicio.Value:HH:mm}.\n" +
+                        $"La hora mínima permitida es {DateTime.Now.AddHours(1):HH:mm}.",
+                        "Hora no válida",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
 
-                _iniciandoForm = true;
-                dtpHoraInicio.Value = ahora;
-                dtpHoraFin.Value = ahora.AddMinutes(60);
-                _iniciandoForm = false;
-                return;
+                    _iniciandoForm = true;
+                    dtpHoraInicio.Value = dtpHoraInicio.Value.Date.AddHours(DateTime.Now.Hour + 1);
+                    dtpHoraFin.Value = dtpHoraInicio.Value.AddHours(1);
+                    _iniciandoForm = false;
+                    return;
+                }
             }
 
-            // Ajustar hora fin: mínimo 30 minutos después
-            if (dtpHoraFin.Value <= dtpHoraInicio.Value.AddMinutes(30))
-            {
-                _iniciandoForm = true;
-                dtpHoraFin.Value = dtpHoraInicio.Value.AddMinutes(60);
-                _iniciandoForm = false;
-            }
+            _iniciandoForm = true;
+            dtpHoraFin.Value = dtpHoraInicio.Value.AddHours(1);
+            _iniciandoForm = false;
 
-            CargarInvestigadores(
-                calendario.SelectionStart.Date,
-                dtpHoraInicio.Value.ToString("HH:mm"),
-                dtpHoraFin.Value.ToString("HH:mm")
-            );
+            // En modo edición mantener investigadores marcados
+            if (_reunionEditando != null)
+                CargarInvestigadoresModoEdicion();
+            else
+                CargarInvestigadores(
+                    calendario.SelectionStart.Date,
+                    dtpHoraInicio.Value.ToString("HH:mm"),
+                    dtpHoraFin.Value.ToString("HH:mm")
+                );
         }
 
         private void dtpHoraFin_ValueChanged(object sender, EventArgs e)
         {
             if (_iniciandoForm) return;
 
-            if (dtpHoraFin.Value <= dtpHoraInicio.Value.AddMinutes(30))
+            if (dtpHoraFin.Value.TimeOfDay <= dtpHoraInicio.Value.TimeOfDay)
             {
                 MessageBox.Show(
-                    "La hora final debe ser al menos 30 minutos posterior a la hora de inicio.",
+                    "La hora final debe ser posterior a la hora de inicio.",
                     "Hora no válida",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
                 _iniciandoForm = true;
-                dtpHoraFin.Value = dtpHoraInicio.Value.AddMinutes(60);
+                dtpHoraFin.Value = dtpHoraInicio.Value.AddHours(1);
                 _iniciandoForm = false;
                 return;
             }
 
-            CargarInvestigadores(
-                calendario.SelectionStart.Date,
-                dtpHoraInicio.Value.ToString("HH:mm"),
-                dtpHoraFin.Value.ToString("HH:mm")
-            );
+            // En modo edición mantener investigadores marcados
+            if (_reunionEditando != null)
+                CargarInvestigadoresModoEdicion();
+            else
+                CargarInvestigadores(
+                    calendario.SelectionStart.Date,
+                    dtpHoraInicio.Value.ToString("HH:mm"),
+                    dtpHoraFin.Value.ToString("HH:mm")
+                );
         }
     }
 }

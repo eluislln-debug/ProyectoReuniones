@@ -29,13 +29,14 @@ namespace ProyectoReuniones
             _usuarioActual = usuario;
             lblBienbenido.Text = "Bienvenido, " + _usuarioActual.NombreUsuario;
             // 2. Configuración de controles
-            txtBusqueda.Text = "";
-            txtBusqueda.PlaceholderText = "Ingrese valor de busqueda...";
+            txtBusquedaHora.Text = "";
+            txtBusquedaHora.PlaceholderText = "Ingrese valor de busqueda...";
 
             cbFiltro.Items.Clear();
             cbFiltro.Items.Add("Fecha");
+            cbFiltro.Items.Add("Mes");
+            cbFiltro.Items.Add("Año");
             cbFiltro.Items.Add("Hora");
-            cbFiltro.Items.Add("Investigador");
             cbFiltro.SelectedIndex = 0;
 
             // 3. Preparar el Grid
@@ -49,6 +50,7 @@ namespace ProyectoReuniones
             dt.Columns.Add("Fecha");
             dt.Columns.Add("Hora Inicio");
             dt.Columns.Add("Hora Fin");    // ← columna nueva
+            dt.Columns.Add("Estado");      // ← nueva columna
             dt.Columns.Add("Motivo");
             dt.Columns.Add("Participantes");
 
@@ -72,28 +74,60 @@ namespace ProyectoReuniones
 
             foreach (var r in listaReuniones)
             {
-                // Buscar los nombres de los investigadores en la colección Usuarios
                 string nombresInvestigadores = "Ninguno";
 
                 if (r.NumerosInvestigadores != null && r.NumerosInvestigadores.Count > 0)
                 {
-                    // Traer los usuarios cuyos números estén en la lista de investigadores
                     var investigadores = BD.Instancia.Usuarios
                         .Find(u => r.NumerosInvestigadores.Contains(u.NumeroUsuario))
                         .ToList();
 
-                    // Unir los nombres separados por coma
                     nombresInvestigadores = string.Join(", ", investigadores.Select(u => u.NombreUsuario));
                 }
 
+                // Calcular estado automáticamente
+                string estado = CalcularEstado(r);
+
                 dt.Rows.Add(
                     r.Id.ToString(),
-                    r.FechaReu.ToString("dd/MM/yyyy"),
+                    r.FechaReu.ToLocalTime().ToString("dd/MM/yyyy"),
                     r.HoraReu,
                     r.HoraFinReu,
+                    estado,
                     r.MotivoReu,
-                    nombresInvestigadores  // Ahora muestra los nombres reales
+                    nombresInvestigadores
+                    
                 );
+            }
+
+            // Colorear filas según estado
+            foreach (DataGridViewRow fila in guna2DataGridView1.Rows)
+            {
+                string estado = fila.Cells["Estado"].Value?.ToString();
+
+                switch (estado)
+                {
+                    case "Pendiente":
+                        fila.DefaultCellStyle.BackColor = Color.FromArgb(219, 234, 254); // Azul claro
+                        fila.DefaultCellStyle.ForeColor = Color.FromArgb(30, 64, 175);
+                        break;
+                    case "En curso":
+                        fila.DefaultCellStyle.BackColor = Color.FromArgb(220, 252, 231); // Verde claro
+                        fila.DefaultCellStyle.ForeColor = Color.FromArgb(22, 101, 52);
+                        break;
+                    case "Finalizada":
+                        fila.DefaultCellStyle.BackColor = Color.FromArgb(229, 231, 235); // Gris claro
+                        fila.DefaultCellStyle.ForeColor = Color.FromArgb(75, 85, 99);
+                        break;
+                    case "Reprogramada":
+                        fila.DefaultCellStyle.BackColor = Color.FromArgb(254, 243, 199); // Amarillo claro
+                        fila.DefaultCellStyle.ForeColor = Color.FromArgb(146, 64, 14);
+                        break;
+                    case "Cancelada":
+                        fila.DefaultCellStyle.BackColor = Color.FromArgb(254, 226, 226); // Rojo claro
+                        fila.DefaultCellStyle.ForeColor = Color.FromArgb(153, 27, 27);
+                        break;
+                }
             }
 
             if (listaReuniones.Count == 0)
@@ -122,17 +156,11 @@ namespace ProyectoReuniones
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            string valor = txtBusqueda.Text.Trim();
-            if (string.IsNullOrWhiteSpace(valor))
-            {
-                MessageBox.Show("Ingrese un término de búsqueda.");
-                return;
-            }
-
             try
             {
                 string filtro = cbFiltro.SelectedItem.ToString();
 
+                // Traer reuniones del líder actual
                 var queryBase = BD.Instancia.Reuniones
                     .Find(r => r.NumeroLider == _usuarioActual.NumeroUsuario)
                     .ToList();
@@ -142,35 +170,37 @@ namespace ProyectoReuniones
                 switch (filtro)
                 {
                     case "Fecha":
-                        if (DateTime.TryParse(valor, out DateTime f))
-                            resultados = queryBase
-                                .Where(r => r.FechaReu.Date == f.Date)
-                                .ToList();
+                        DateTime fechaBusqueda = calBusqueda.SelectionStart.Date;
+                        resultados = queryBase
+                            .Where(r => r.FechaReu.ToLocalTime().Date == fechaBusqueda)
+                            .ToList();
+                        break;
+
+                    case "Mes":
+                        int mesBusqueda = int.Parse(cbValorFiltro.SelectedItem.ToString().Split('-')[0].Trim());
+                        resultados = queryBase
+                            .Where(r => r.FechaReu.ToLocalTime().Month == mesBusqueda)
+                            .ToList();
+                        break;
+
+                    case "Año":
+                        int anioBusqueda = int.Parse(cbValorFiltro.SelectedItem.ToString());
+                        resultados = queryBase
+                            .Where(r => r.FechaReu.ToLocalTime().Year == anioBusqueda)
+                            .ToList();
                         break;
 
                     case "Hora":
+                        if (string.IsNullOrWhiteSpace(txtBusquedaHora.Text))
+                        {
+                            MessageBox.Show("Ingresa una hora para buscar.",
+                                "Campo vacío", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                        string horaBusqueda = txtBusquedaHora.Text.Trim();
                         resultados = queryBase
-                            .Where(r => r.HoraReu != null && r.HoraReu.Contains(valor))
+                            .Where(r => r.HoraReu != null && r.HoraReu.Contains(horaBusqueda))
                             .ToList();
-                        break;
-
-                    case "Investigador":
-
-                        // Buscar usuarios que coincidan con el nombre
-                        var investigadores = BD.Instancia.Usuarios
-                            .Find(u => u.NombreUsuario.ToLower().Contains(valor.ToLower()))
-                            .ToList();
-
-                        var idsInvestigadores = investigadores
-                            .Select(u => u.NumeroUsuario)
-                            .ToList();
-
-                        // Filtrar reuniones donde participen esos investigadores
-                        resultados = queryBase
-                            .Where(r => r.NumerosInvestigadores != null &&
-                                        r.NumerosInvestigadores.Any(id => idsInvestigadores.Contains(id)))
-                            .ToList();
-
                         break;
                 }
 
@@ -178,7 +208,8 @@ namespace ProyectoReuniones
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -189,36 +220,100 @@ namespace ProyectoReuniones
 
         private void guna2Button3_Click(object sender, EventArgs e)
         {
-            // 1. Validamos selección
             if (string.IsNullOrEmpty(idReunionSeleccionada))
             {
-                MessageBox.Show("Por favor, selecciona una reunión.");
+                MessageBox.Show("Por favor selecciona una reunión.", "Sin selección",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (MessageBox.Show($"¿Deseas cancelar la reunión?", "Confirmar", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            // Buscar la reunión completa
+            var filtro = Builders<Reunion>.Filter.Eq(r => r.Id, idReunionSeleccionada);
+            Reunion reunion = BD.Instancia.Reuniones.Find(filtro).FirstOrDefault();
+
+            if (reunion == null)
+            {
+                MessageBox.Show("No se encontró la reunión.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Calcular estado actual
+            string estadoActual = CalcularEstado(reunion);
+
+            // No permitir cancelar reuniones finalizadas o ya canceladas
+            if (estadoActual == "Finalizada")
+            {
+                MessageBox.Show(
+                    "No puedes cancelar una reunión que ya finalizó.",
+                    "Cancelación no permitida",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (estadoActual == "Cancelada")
+            {
+                MessageBox.Show(
+                    "Esta reunión ya está cancelada.",
+                    "Cancelación no permitida",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Para pendientes y reprogramadas validar 1 hora de diferencia
+            if (estadoActual == "Pendiente" || estadoActual == "Reprogramada")
+            {
+                DateTime fechaReu = reunion.FechaReu.ToLocalTime().Date;
+                TimeSpan horaInicio = TimeSpan.Parse(reunion.HoraReu);
+                DateTime inicioCompleto = fechaReu.Add(horaInicio);
+                TimeSpan diferencia = inicioCompleto - DateTime.Now;
+
+                if (diferencia.TotalHours < 1)
+                {
+                    MessageBox.Show(
+                        $"No puedes cancelar esta reunión.\n" +
+                        $"Debe haber al menos 1 hora de diferencia con la hora de inicio.\n" +
+                        $"La reunión comienza a las {reunion.HoraReu}.",
+                        "Cancelación no permitida",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
+            // En curso tampoco se puede cancelar
+            if (estadoActual == "En curso")
+            {
+                MessageBox.Show(
+                    "No puedes cancelar una reunión que está en curso.",
+                    "Cancelación no permitida",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (MessageBox.Show("¿Deseas cancelar esta reunión?", "Confirmar",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 try
                 {
-                    // EL CAMBIO ESTÁ AQUÍ: 
-                    // Como tu clase 'Reunion' usa 'string Id', el filtro debe comparar contra el string.
-                    // No necesitas hacer el .Parse() a ObjectId para el filtro de LINQ.
+                    var filtroCancelar = Builders<Reunion>.Filter.Eq(r => r.Id, idReunionSeleccionada);
+                    var actualizacion = Builders<Reunion>.Update.Set(r => r.EstadoReu, "Cancelada");
 
-                    var filtro = Builders<Reunion>.Filter.Eq(r => r.Id, idReunionSeleccionada);
+                    BD.Instancia.Reuniones.UpdateOne(filtroCancelar, actualizacion);
 
-                    // Ejecutamos la eliminación
-                    var resultado = BD.Instancia.Reuniones.DeleteOne(filtro);
+                    MessageBox.Show("Reunión cancelada correctamente.", "Éxito",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    if (resultado.DeletedCount > 0)
-                    {
-                        MessageBox.Show("Reunión cancelada correctamente.", "Éxito");
-                        idReunionSeleccionada = "";
-                        ConsultarTodasLasReuniones();
-                    }
+                    idReunionSeleccionada = "";
+                    ConsultarTodasLasReuniones();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error al eliminar: " + ex.Message);
+                    MessageBox.Show("Error: " + ex.Message, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -269,6 +364,176 @@ namespace ProyectoReuniones
                 Form1 formLogin = new Form1();
                 this.Hide();
                 formLogin.Show();
+            }
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(idReunionSeleccionada))
+            {
+                MessageBox.Show(
+                    "Por favor selecciona una reunión para editar.",
+                    "Sin selección",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            var filtro = Builders<Reunion>.Filter.Eq(r => r.Id, idReunionSeleccionada);
+            Reunion reunionEditar = BD.Instancia.Reuniones.Find(filtro).FirstOrDefault();
+
+            if (reunionEditar == null)
+            {
+                MessageBox.Show("No se encontró la reunión.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Calcular estado actual de la reunión
+            string estadoActual = CalcularEstado(reunionEditar);
+
+            // No permitir editar reuniones finalizadas, canceladas o en curso
+            if (estadoActual == "Finalizada")
+            {
+                MessageBox.Show(
+                    "No puedes editar una reunión finalizada.",
+                    "Edición no permitida",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (estadoActual == "Cancelada")
+            {
+                MessageBox.Show(
+                    "No puedes editar una reunión cancelada.",
+                    "Edición no permitida",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (estadoActual == "En curso")
+            {
+                MessageBox.Show(
+                    "No puedes editar una reunión que está en curso.",
+                    "Edición no permitida",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Para reuniones pendientes validar que falte al menos 1 hora para el inicio
+            if (estadoActual == "Pendiente" || estadoActual == "Reprogramada")
+            {
+                DateTime fechaReu = reunionEditar.FechaReu.ToLocalTime().Date;
+                TimeSpan horaInicio = TimeSpan.Parse(reunionEditar.HoraReu);
+                DateTime inicioCompleto = fechaReu.Add(horaInicio);
+
+                // Diferencia entre ahora y la hora de inicio
+                TimeSpan diferencia = inicioCompleto - DateTime.Now;
+
+                if (diferencia.TotalHours < 1)
+                {
+                    MessageBox.Show(
+                        $"No puedes editar esta reunión.\n" +
+                        $"Debe haber al menos 1 hora de diferencia con la hora de inicio.\n" +
+                        $"La reunión comienza a las {reunionEditar.HoraReu}.",
+                        "Edición no permitida",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
+            // Todo válido — abrir FormLider en modo edición
+            FormLider formEditar = new FormLider(_usuarioActual, reunionEditar);
+            formEditar.ShowDialog();
+
+            ConsultarTodasLasReuniones();
+        }
+
+        // ── Calcula el estado automático de una reunión ───────────────
+        private string CalcularEstado(Reunion r)
+        {
+            // Si está cancelada respetar ese estado
+            if (r.EstadoReu == "Cancelada") return "Cancelada";
+
+            // Si está reprogramada respetar ese estado
+            if (r.EstadoReu == "Reprogramada") return "Reprogramada";
+
+            DateTime ahora = DateTime.Now;
+            DateTime fechaReu = r.FechaReu.ToLocalTime().Date;
+
+            TimeSpan horaInicio = TimeSpan.Parse(r.HoraReu);
+            TimeSpan horaFin = TimeSpan.Parse(r.HoraFinReu);
+
+            DateTime inicioCompleto = fechaReu.Add(horaInicio);
+            DateTime finCompleto = fechaReu.Add(horaFin);
+
+            if (ahora < inicioCompleto)
+                return "Pendiente";
+            else if (ahora >= inicioCompleto && ahora < finCompleto)
+                return "En curso";
+            else
+                return "Finalizada";
+        }
+
+        private void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void cbFiltro_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Ocultar todos los controles de búsqueda
+            calBusqueda.Visible = false;
+            txtBusquedaHora.Visible = false;
+            cbValorFiltro.Visible = false;
+
+            string filtro = cbFiltro.SelectedItem.ToString();
+
+            switch (filtro)
+            {
+                case "Fecha":
+                    // Mostrar calendario
+                    calBusqueda.Visible = true;
+                    calBusqueda.MinDate = DateTime.Today;
+                    calBusqueda.SelectionStart = DateTime.Today;
+                    break;
+
+                case "Mes":
+                    // Mostrar combobox con meses desde el actual
+                    cbValorFiltro.Visible = true;
+                    cbValorFiltro.Items.Clear();
+
+                    for (int mes = DateTime.Today.Month; mes <= 12; mes++)
+                    {
+                        // Nombre del mes en español
+                        string nombreMes = new DateTime(DateTime.Today.Year, mes, 1)
+                            .ToString("MMMM", new System.Globalization.CultureInfo("es-CO"));
+                        cbValorFiltro.Items.Add($"{mes} - {nombreMes}");
+                    }
+                    cbValorFiltro.SelectedIndex = 0;
+                    break;
+
+                case "Año":
+                    // Mostrar combobox con años desde el actual
+                    cbValorFiltro.Visible = true;
+                    cbValorFiltro.Items.Clear();
+
+                    for (int anio = DateTime.Today.Year; anio <= DateTime.Today.Year + 5; anio++)
+                        cbValorFiltro.Items.Add(anio.ToString());
+
+                    cbValorFiltro.SelectedIndex = 0;
+                    break;
+
+                case "Hora":
+                    // Mostrar textbox para escribir la hora
+                    txtBusquedaHora.Visible = true;
+                    txtBusquedaHora.Text = "";
+                    txtBusquedaHora.PlaceholderText = "Ej: 08:00";
+                    break;
             }
         }
     }
