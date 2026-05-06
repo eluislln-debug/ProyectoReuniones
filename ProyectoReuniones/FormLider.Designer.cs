@@ -112,7 +112,7 @@
             this.btnVerReuniones.Name = "btnVerReuniones";
             this.btnVerReuniones.Size = new System.Drawing.Size(188, 36);
             this.btnVerReuniones.TabIndex = 10;
-            this.btnVerReuniones.Text = "Ver mis reuniones";
+            this.btnVerReuniones.Text = "Gestionar reuniones";
             this.btnVerReuniones.Click += new System.EventHandler(this.btnVerReuniones_Click);
             // 
             // btnRegistrar

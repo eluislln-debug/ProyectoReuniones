@@ -197,6 +197,18 @@ namespace ProyectoReuniones
                                 "Campo vacío", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
                         }
+
+                        // Validar formato HH:mm
+                        if (!TimeSpan.TryParse(txtBusquedaHora.Text.Trim(), out TimeSpan horaValida))
+                        {
+                            MessageBox.Show(
+                                "Formato de hora incorrecto.\nUsa el formato HH:mm, ejemplo: 08:00 o 14:30.",
+                                "Formato inválido",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                            return;
+                        }
+
                         string horaBusqueda = txtBusquedaHora.Text.Trim();
                         resultados = queryBase
                             .Where(r => r.HoraReu != null && r.HoraReu.Contains(horaBusqueda))
@@ -221,101 +233,101 @@ namespace ProyectoReuniones
         private void guna2Button3_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(idReunionSeleccionada))
-            {
-                MessageBox.Show("Por favor selecciona una reunión.", "Sin selección",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+    {
+        MessageBox.Show("Por favor selecciona una reunión.", "Sin selección",
+            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return;
+    }
 
-            // Buscar la reunión completa
-            var filtro = Builders<Reunion>.Filter.Eq(r => r.Id, idReunionSeleccionada);
-            Reunion reunion = BD.Instancia.Reuniones.Find(filtro).FirstOrDefault();
+    // Buscar la reunión completa
+    var filtro = Builders<Reunion>.Filter.Eq(r => r.Id, idReunionSeleccionada);
+    Reunion reunion = BD.Instancia.Reuniones.Find(filtro).FirstOrDefault();
 
-            if (reunion == null)
-            {
-                MessageBox.Show("No se encontró la reunión.", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+    if (reunion == null)
+    {
+        MessageBox.Show("No se encontró la reunión.", "Error",
+            MessageBoxButtons.OK, MessageBoxIcon.Error);
+        return;
+    }
 
-            // Calcular estado actual
-            string estadoActual = CalcularEstado(reunion);
+    // Calcular estado actual
+    string estadoActual = CalcularEstado(reunion);
 
-            // No permitir cancelar reuniones finalizadas o ya canceladas
-            if (estadoActual == "Finalizada")
-            {
-                MessageBox.Show(
-                    "No puedes cancelar una reunión que ya finalizó.",
-                    "Cancelación no permitida",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
-            }
+    // No permitir cancelar reuniones finalizadas o ya canceladas
+    if (estadoActual == "Finalizada")
+    {
+        MessageBox.Show(
+            "No puedes cancelar una reunión que ya finalizó.",
+            "Cancelación no permitida",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Warning);
+        return;
+    }
 
-            if (estadoActual == "Cancelada")
-            {
-                MessageBox.Show(
-                    "Esta reunión ya está cancelada.",
-                    "Cancelación no permitida",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
-            }
+    if (estadoActual == "Cancelada")
+    {
+        MessageBox.Show(
+            "Esta reunión ya está cancelada.",
+            "Cancelación no permitida",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Warning);
+        return;
+    }
 
-            // Para pendientes y reprogramadas validar 1 hora de diferencia
-            if (estadoActual == "Pendiente" || estadoActual == "Reprogramada")
-            {
-                DateTime fechaReu = reunion.FechaReu.ToLocalTime().Date;
-                TimeSpan horaInicio = TimeSpan.Parse(reunion.HoraReu);
-                DateTime inicioCompleto = fechaReu.Add(horaInicio);
-                TimeSpan diferencia = inicioCompleto - DateTime.Now;
+    // Para pendientes y reprogramadas validar 1 hora de diferencia
+    if (estadoActual == "Pendiente" || estadoActual == "Reprogramada")
+    {
+        DateTime fechaReu       = reunion.FechaReu.ToLocalTime().Date;
+        TimeSpan horaInicio     = TimeSpan.Parse(reunion.HoraReu);
+        DateTime inicioCompleto = fechaReu.Add(horaInicio);
+        TimeSpan diferencia     = inicioCompleto - DateTime.Now;
 
-                if (diferencia.TotalHours < 1)
-                {
-                    MessageBox.Show(
-                        $"No puedes cancelar esta reunión.\n" +
-                        $"Debe haber al menos 1 hora de diferencia con la hora de inicio.\n" +
-                        $"La reunión comienza a las {reunion.HoraReu}.",
-                        "Cancelación no permitida",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                    return;
-                }
-            }
+        if (diferencia.TotalHours < 1)
+        {
+            MessageBox.Show(
+                $"No puedes cancelar esta reunión.\n" +
+                $"Debe haber al menos 1 hora de diferencia con la hora de inicio.\n" +
+                $"La reunión comienza a las {reunion.HoraReu}.",
+                "Cancelación no permitida",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+            return;
+        }
+    }
 
-            // En curso tampoco se puede cancelar
-            if (estadoActual == "En curso")
-            {
-                MessageBox.Show(
-                    "No puedes cancelar una reunión que está en curso.",
-                    "Cancelación no permitida",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
-            }
+    // En curso tampoco se puede cancelar
+    if (estadoActual == "En curso")
+    {
+        MessageBox.Show(
+            "No puedes cancelar una reunión que está en curso.",
+            "Cancelación no permitida",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Warning);
+        return;
+    }
 
-            if (MessageBox.Show("¿Deseas cancelar esta reunión?", "Confirmar",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                try
-                {
-                    var filtroCancelar = Builders<Reunion>.Filter.Eq(r => r.Id, idReunionSeleccionada);
-                    var actualizacion = Builders<Reunion>.Update.Set(r => r.EstadoReu, "Cancelada");
+    if (MessageBox.Show("¿Deseas cancelar esta reunión?", "Confirmar",
+        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+    {
+        try
+        {
+            var filtroCancelar = Builders<Reunion>.Filter.Eq(r => r.Id, idReunionSeleccionada);
+            var actualizacion  = Builders<Reunion>.Update.Set(r => r.EstadoReu, "Cancelada");
 
-                    BD.Instancia.Reuniones.UpdateOne(filtroCancelar, actualizacion);
+            BD.Instancia.Reuniones.UpdateOne(filtroCancelar, actualizacion);
 
-                    MessageBox.Show("Reunión cancelada correctamente.", "Éxito",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Reunión cancelada correctamente.", "Éxito",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    idReunionSeleccionada = "";
-                    ConsultarTodasLasReuniones();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message, "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            idReunionSeleccionada = "";
+            ConsultarTodasLasReuniones();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Error: " + ex.Message, "Error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
         }
 
         private void guna2DataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
