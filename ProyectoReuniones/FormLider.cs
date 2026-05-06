@@ -18,15 +18,6 @@ namespace ProyectoReuniones
         // Variable que guarda el usuario que inició sesión
         private Usuario _usuarioActual;
        
-
-        // ── Horas fijas disponibles para reuniones ────────────────────
-        private readonly List<string> _todasLasHoras = new List<string>
-        {
-            "08:00", "09:00", "10:00", "11:00",
-            "12:00", "13:00", "14:00", "15:00",
-            "16:00", "17:00"
-        };
-
         private bool _cargandoHoras = false;
 
         public FormLider(Usuario usuario)
@@ -55,20 +46,6 @@ namespace ProyectoReuniones
             // o puedes cambiarlo por Guna2DateTimePicker en el diseñador
             calendario.BackColor = Color.White;
             calendario.TitleBackColor = Color.FromArgb(59, 130, 246); // Azul moderno
-
-            // --- 2. DISEÑO: Lista de Horas (lstHoras) ---
-            lstHoras.BorderStyle = BorderStyle.None;
-            lstHoras.BackColor = Color.White;
-            lstHoras.Font = new Font("Segoe UI", 10F);
-            lstHoras.ItemHeight = 30; // Más espacio para cada hora
-            lstHoras.ForeColor = Color.FromArgb(71, 85, 105);
-
-            // --- Lista Hora Final (lstHoraFin) igual que lstHoras ---
-            lstHoraFin.BorderStyle = BorderStyle.None;
-            lstHoraFin.BackColor = Color.White;
-            lstHoraFin.Font = new Font("Segoe UI", 10F);
-            lstHoraFin.ItemHeight = 30;
-            lstHoraFin.ForeColor = Color.FromArgb(71, 85, 105);
 
             // --- 3. DISEÑO: Lista de Investigadores (lstInvestigadores) ---
             lstInvestigadores.BorderStyle = BorderStyle.None;
@@ -125,12 +102,13 @@ namespace ProyectoReuniones
             card.ShadowShift = 5;
         }
 
+        // Bandera para evitar validaciones al cargar
+        private bool _iniciandoForm = false;
+
         private void FormLider_Load(object sender, EventArgs e)
         {
-            // Mostrar nombre del líder y su semillero
             lblBienvenida.Text = "Bienvenido, " + _usuarioActual.NombreUsuario;
 
-            // Buscar el semillero del líder para mostrar su nombre
             var semillero = BD.Instancia.Semilleros
                 .Find(s => s.NumeroSemillero == _usuarioActual.NumeroSemillero)
                 .FirstOrDefault();
@@ -139,62 +117,132 @@ namespace ProyectoReuniones
                 ? "Semillero: " + semillero.NombreSemillero
                 : "Semillero: No encontrado";
 
-            // Cargar horas y investigadores con el día de hoy por defecto
-            CargarHorasDisponibles(DateTime.Today);
-            CargarInvestigadores();
+            // Activar bandera para evitar validaciones
+            _iniciandoForm = true;
+
+            DateTime ahora = DateTime.Now;
+            dtpHoraInicio.Value = ahora;                // Hora actual
+            dtpHoraFin.Value = ahora.AddMinutes(60);    // Una hora más
+
+            _iniciandoForm = false;
+
+            CargarInvestigadores(
+                DateTime.Today,
+                dtpHoraInicio.Value.ToString("HH:mm"),
+                dtpHoraFin.Value.ToString("HH:mm")
+            );
         }
 
-        private void calendario_DateChanged(object sender, DateRangeEventArgs e)
+        private void CargarInvestigadores(DateTime? fecha = null, string horaInicio = null, string horaFin = null)
         {
-            // Recargar horas disponibles para el nuevo día seleccionado
-            CargarHorasDisponibles(e.Start);
+            lstInvestigadores.Items.Clear();
 
-            // Limpiar selección de investigadores al cambiar de día
-            for (int i = 0; i < lstInvestigadores.Items.Count; i++)
-                lstInvestigadores.SetItemChecked(i, false);
-        }
+            // Traer todos los investigadores del semillero del líder
+            var todosLosInvestigadores = BD.Instancia.Usuarios
+                .Find(u => u.NumeroSemillero == _usuarioActual.NumeroSemillero
+                        && u.TipoUsuario == "Investigador")
+                .ToList();
 
-        // ── Cargar horas deshabilitando las ya ocupadas ───────────────
-        private void CargarHorasDisponibles(DateTime fecha)
-        {
-            lstHoras.Items.Clear();
-            lstHoraFin.Items.Clear();
+            // Si no hay fecha u horas seleccionadas, mostramos todos
+            if (fecha == null || horaInicio == null || horaFin == null)
+            {
+                foreach (var inv in todosLosInvestigadores)
+                    lstInvestigadores.Items.Add(inv.NombreUsuario);
 
-            // Buscar todas las reuniones del líder en esa fecha
-            DateTime inicioDia = fecha.Date;
+                lstInvestigadores.Tag = todosLosInvestigadores;
+                return;
+            }
+
+            // Convertir horas seleccionadas a TimeSpan
+            TimeSpan tsInicio = TimeSpan.Parse(horaInicio);
+            TimeSpan tsFin = TimeSpan.Parse(horaFin);
+
+            // Buscar reuniones del día
+            DateTime inicioDia = fecha.Value.Date;
             DateTime finDia = inicioDia.AddDays(1);
 
             var reunionesDelDia = BD.Instancia.Reuniones
-                .Find(r => r.NumeroLider == _usuarioActual.NumeroUsuario
-                        && r.FechaReu >= inicioDia && r.FechaReu < finDia)
-                .ToList(); ;
+                .Find(r => r.FechaReu >= inicioDia && r.FechaReu < finDia)
+                .ToList();
 
-            // Construir los rangos ocupados del líder ese día
-            // Cada reunión bloquea desde su hora inicio hasta su hora fin
-            List<(TimeSpan inicio, TimeSpan fin)> rangosOcupados = new List<(TimeSpan, TimeSpan)>();
+            // Lista de investigadores ocupados
+            List<int> investigadoresOcupados = new List<int>();
 
             foreach (var r in reunionesDelDia)
-                if (!TimeSpan.TryParse(r.HoraFinReu, out TimeSpan fin))
-                {
-                    continue; // o maneja el error como prefieras
-                }
-
-            // Agregar cada hora indicando disponibilidad
-            foreach (string hora in _todasLasHoras)
             {
-                TimeSpan horaTS = TimeSpan.Parse(hora);
+                if (string.IsNullOrEmpty(r.HoraReu) || string.IsNullOrEmpty(r.HoraFinReu))
+                    continue;
 
-                // Una hora está ocupada si cae dentro de algún rango existente
-                bool ocupada = rangosOcupados.Any(r => horaTS >= r.inicio && horaTS < r.fin);
+                TimeSpan rIni = TimeSpan.Parse(r.HoraReu);
+                TimeSpan rFin = TimeSpan.Parse(r.HoraFinReu);
 
-                if (ocupada)
-                    lstHoras.Items.Add(hora + "  ✗ Ocupada");
-                else
-                    lstHoras.Items.Add(hora + "  ✓ Disponible");
+                // Verificar solapamiento
+                bool seSolapa = tsInicio < rFin && tsFin > rIni;
+
+                if (seSolapa && r.NumerosInvestigadores != null)
+                {
+                    foreach (int numInv in r.NumerosInvestigadores)
+                        if (!investigadoresOcupados.Contains(numInv))
+                            investigadoresOcupados.Add(numInv);
+                }
             }
 
-            // Limpiar hora fin al recargar
-            lstHoraFin.Items.Clear();
+            // Mostrar solo investigadores libres
+            var investigadoresLibres = todosLosInvestigadores
+                .Where(u => !investigadoresOcupados.Contains(u.NumeroUsuario))
+                .ToList();
+
+            foreach (var inv in investigadoresLibres)
+                lstInvestigadores.Items.Add(inv.NombreUsuario);
+
+            lstInvestigadores.Tag = investigadoresLibres;
+        }
+
+
+        private void calendario_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            _iniciandoForm = true;
+
+            DateTime ahora = DateTime.Now;
+            dtpHoraInicio.Value = e.Start.Date.AddHours(ahora.Hour).AddMinutes(ahora.Minute);
+            dtpHoraFin.Value = dtpHoraInicio.Value.AddHours(1);
+
+            _iniciandoForm = false;
+
+            // Validaciones inmediatas al seleccionar fecha
+            DateTime fechaSeleccionada = e.Start.Date;
+
+            // Mensaje si es un día pasado
+            if (fechaSeleccionada < DateTime.Today)
+            {
+                MessageBox.Show(
+                    "No puedes programar una reunión en un día pasado.",
+                    "Advertencia",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+
+            // Mensaje si es domingo
+            if (fechaSeleccionada.DayOfWeek == DayOfWeek.Sunday)
+            {
+                MessageBox.Show(
+                    "No se pueden programar reuniones los domingos.",
+                    "Advertencia",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+
+            // Limpiar selección de investigadores
+            for (int i = 0; i < lstInvestigadores.Items.Count; i++)
+                lstInvestigadores.SetItemChecked(i, false);
+
+            // Recargar investigadores para esa fecha y rango
+            CargarInvestigadores(
+                e.Start.Date,
+                dtpHoraInicio.Value.ToString("HH:mm"),
+                dtpHoraFin.Value.ToString("HH:mm")
+            );
+
         }
 
         // ── Cargar investigadores del mismo semillero del líder ────────
@@ -221,38 +269,14 @@ namespace ProyectoReuniones
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            // Validar fecha
             DateTime fechaSeleccionada = calendario.SelectionStart.Date;
 
+            // Validar fecha
             if (fechaSeleccionada < DateTime.Today)
             {
                 MessageBox.Show(
-                    "No puedes programar una reunión en una fecha pasada.\n" +
-                    $"La fecha mínima permitida es el {DateTime.Today:dd/MM/yyyy}.",
+                    "No puedes programar una reunión en una fecha pasada.",
                     "Fecha no válida",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Validar hora de inicio
-            if (lstHoras.SelectedIndex < 0 ||
-                lstHoras.SelectedItem.ToString().Contains("✗ Ocupada"))
-            {
-                MessageBox.Show(
-                    "Por favor selecciona una hora de inicio disponible.",
-                    "Hora no seleccionada",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Validar hora final
-            if (lstHoraFin.SelectedIndex < 0)
-            {
-                MessageBox.Show(
-                    "Por favor selecciona la hora final de la reunión.",
-                    "Hora final no seleccionada",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
                 return;
@@ -280,20 +304,32 @@ namespace ProyectoReuniones
                 return;
             }
 
-            string horaInicio = _todasLasHoras[lstHoras.SelectedIndex];
-            string horaFin = lstHoraFin.SelectedItem.ToString();
+            // Obtener horas dinámicas desde los DateTimePicker
+            string horaInicio = dtpHoraInicio.Value.ToString("HH:mm");
+            string horaFin = dtpHoraFin.Value.ToString("HH:mm");
 
             TimeSpan tsInicio = TimeSpan.Parse(horaInicio);
             TimeSpan tsFin = TimeSpan.Parse(horaFin);
 
-            // Recuperar investigadores marcados
+            // Validar que la hora fin sea al menos 30 minutos después
+            if (tsFin <= tsInicio.Add(TimeSpan.FromMinutes(30)))
+            {
+                MessageBox.Show(
+                    "La hora final debe ser al menos 30 minutos posterior a la hora de inicio.",
+                    "Hora no válida",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Recuperar investigadores seleccionados
             var listaInvestigadores = lstInvestigadores.Tag as List<Usuario>;
             List<int> numerosSeleccionados = new List<int>();
 
             foreach (int indice in lstInvestigadores.CheckedIndices)
                 numerosSeleccionados.Add(listaInvestigadores[indice].NumeroUsuario);
 
-            // Traer todas las reuniones de esa fecha para validar
+            // Validar solapamiento con reuniones existentes
             DateTime inicioDia = fechaSeleccionada.Date;
             DateTime finDia = inicioDia.AddDays(1);
 
@@ -301,31 +337,27 @@ namespace ProyectoReuniones
                 .Find(r => r.FechaReu >= inicioDia && r.FechaReu < finDia)
                 .ToList();
 
-            // ── Validar que el nuevo rango no choque con reuniones del líder ──
+            // Validar solapamiento del líder
             bool liderOcupado = reunionesDelDia
                 .Where(r => r.NumeroLider == _usuarioActual.NumeroUsuario)
                 .Any(r =>
                 {
                     TimeSpan rIni = TimeSpan.Parse(r.HoraReu);
                     TimeSpan rFin = TimeSpan.Parse(r.HoraFinReu);
-
-                    // Hay choque si los rangos se solapan
                     return tsInicio < rFin && tsFin > rIni;
                 });
 
             if (liderOcupado)
             {
                 MessageBox.Show(
-                    $"Ya tienes una reunión en ese rango horario el " +
-                    $"{fechaSeleccionada:dd/MM/yyyy}.\n" +
-                    "Selecciona un horario que no se solape con tus reuniones existentes.",
+                    $"Ya tienes una reunión en ese rango horario el {fechaSeleccionada:dd/MM/yyyy}.",
                     "Horario ocupado",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
                 return;
             }
 
-            // ── Validar que ningún investigador tenga choque de horario ──────
+            // Validar solapamiento de investigadores
             foreach (int numInv in numerosSeleccionados)
             {
                 bool invOcupado = reunionesDelDia
@@ -344,9 +376,7 @@ namespace ProyectoReuniones
                         .FirstOrDefault(u => u.NumeroUsuario == numInv);
 
                     MessageBox.Show(
-                        $"{invUsuario?.NombreUsuario} tiene una reunión que se " +
-                        $"solapa con el horario seleccionado.\n" +
-                        "Selecciona otro horario o deselecciona ese investigador.",
+                        $"{invUsuario?.NombreUsuario} tiene una reunión que se solapa.",
                         "Investigador ocupado",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
@@ -354,7 +384,7 @@ namespace ProyectoReuniones
                 }
             }
 
-            // ── Guardar reunión ───────────────────────────────────────────────
+            // Guardar reunión
             Reunion nuevaReunion = new Reunion
             {
                 FechaReu = fechaSeleccionada,
@@ -375,13 +405,8 @@ namespace ProyectoReuniones
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
 
-            // Recargar horas y limpiar campos
-            CargarHorasDisponibles(fechaSeleccionada);
-            txtMotivo.Clear();
-            lstHoraFin.Items.Clear();
-
-            for (int i = 0; i < lstInvestigadores.Items.Count; i++)
-                lstInvestigadores.SetItemChecked(i, false);
+            // Limpiar después de guardar
+            btnlimpiar_Click(sender, e);
         }
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)
@@ -402,18 +427,29 @@ namespace ProyectoReuniones
 
         private void btnlimpiar_Click(object sender, EventArgs e)
         {
+            // Limpiar el motivo
             txtMotivo.Clear();
 
+            // Deseleccionar investigadores
             for (int i = 0; i < lstInvestigadores.Items.Count; i++)
                 lstInvestigadores.SetItemChecked(i, false);
 
-            lstHoras.ClearSelected();
+            // Reiniciar horas con la hora actual
+            _iniciandoForm = true;
+            DateTime ahora = DateTime.Now;
+            dtpHoraInicio.Value = ahora;
+            dtpHoraFin.Value = ahora.AddHours(1);
 
-            // Limpiar también la lista de hora final
-            lstHoraFin.Items.Clear();
-
+            // Reiniciar calendario al día de hoy
             calendario.SelectionStart = DateTime.Today;
-            CargarHorasDisponibles(DateTime.Today);
+            _iniciandoForm = false;
+
+            // Recargar investigadores para el nuevo rango
+            CargarInvestigadores(
+                DateTime.Today,
+                dtpHoraInicio.Value.ToString("HH:mm"),
+                dtpHoraFin.Value.ToString("HH:mm")
+            );
         }
 
         private void guna2HtmlLabel2_Click(object sender, EventArgs e)
@@ -428,58 +464,71 @@ namespace ProyectoReuniones
             this.Hide();
         }
 
-        private void lstHoras_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Si ya estamos cargando horas no hacer nada para evitar bucle
-            if (_cargandoHoras) return;
-
-            lstHoraFin.Items.Clear();
-
-            if (lstHoras.SelectedIndex < 0) return;
-            if (lstHoras.SelectedItem.ToString().Contains("✗ Ocupada")) return;
-
-            // Activar bandera antes de llenar la lista
-            _cargandoHoras = true;
-
-            string horaInicio = _todasLasHoras[lstHoras.SelectedIndex];
-            TimeSpan tsInicio = TimeSpan.Parse(horaInicio);
-
-            foreach (string hora in _todasLasHoras)
-            {
-                TimeSpan tsHora = TimeSpan.Parse(hora);
-                if (tsHora > tsInicio)
-                    lstHoraFin.Items.Add(hora);
-            }
-
-            // Desactivar bandera al terminar
-            _cargandoHoras = false;
-        }
-
-        private void lstHoraFin_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            lstHoraFin.Items.Clear();
-
-            // Si no hay selección o la hora está ocupada no hacer nada
-            if (lstHoras.SelectedIndex < 0) return;
-            if (lstHoras.SelectedItem.ToString().Contains("✗ Ocupada")) return;
-
-            // Hora de inicio seleccionada
-            string horaInicio = _todasLasHoras[lstHoras.SelectedIndex];
-            TimeSpan tsInicio = TimeSpan.Parse(horaInicio);
-
-            // Solo mostrar horas POSTERIORES a la de inicio hasta las 17:00
-            foreach (string hora in _todasLasHoras)
-            {
-                TimeSpan tsHora = TimeSpan.Parse(hora);
-                if (tsHora > tsInicio)
-                    lstHoraFin.Items.Add(hora);
-            }
-
-            // Agregar 18:00 como opción final máxima si inicio es 17:00
-            // En este caso no hay opciones y se puede manejar aparte
-        }
-
         private void guna2Button1_Click(object sender, EventArgs e)
         { }
+
+        private void dtpHoraInicio_ValueChanged(object sender, EventArgs e)
+        {
+            if (_iniciandoForm) return;
+
+            DateTime ahora = DateTime.Now;
+
+            // Validar que no sea una hora pasada si es hoy
+            if (calendario.SelectionStart.Date == DateTime.Today &&
+                dtpHoraInicio.Value < ahora)
+            {
+                MessageBox.Show(
+                    $"La hora {dtpHoraInicio.Value:HH:mm} ya pasó.\n" +
+                    $"La hora actual es {ahora:HH:mm}.",
+                    "Hora no válida",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                _iniciandoForm = true;
+                dtpHoraInicio.Value = ahora;
+                dtpHoraFin.Value = ahora.AddMinutes(60);
+                _iniciandoForm = false;
+                return;
+            }
+
+            // Ajustar hora fin: mínimo 30 minutos después
+            if (dtpHoraFin.Value <= dtpHoraInicio.Value.AddMinutes(30))
+            {
+                _iniciandoForm = true;
+                dtpHoraFin.Value = dtpHoraInicio.Value.AddMinutes(60);
+                _iniciandoForm = false;
+            }
+
+            CargarInvestigadores(
+                calendario.SelectionStart.Date,
+                dtpHoraInicio.Value.ToString("HH:mm"),
+                dtpHoraFin.Value.ToString("HH:mm")
+            );
+        }
+
+        private void dtpHoraFin_ValueChanged(object sender, EventArgs e)
+        {
+            if (_iniciandoForm) return;
+
+            if (dtpHoraFin.Value <= dtpHoraInicio.Value.AddMinutes(30))
+            {
+                MessageBox.Show(
+                    "La hora final debe ser al menos 30 minutos posterior a la hora de inicio.",
+                    "Hora no válida",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                _iniciandoForm = true;
+                dtpHoraFin.Value = dtpHoraInicio.Value.AddMinutes(60);
+                _iniciandoForm = false;
+                return;
+            }
+
+            CargarInvestigadores(
+                calendario.SelectionStart.Date,
+                dtpHoraInicio.Value.ToString("HH:mm"),
+                dtpHoraFin.Value.ToString("HH:mm")
+            );
+        }
     }
 }

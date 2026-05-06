@@ -41,11 +41,12 @@
             this.btnGuardar = new Guna.UI2.WinForms.Guna2Button();
             this.txtMotivo = new Guna.UI2.WinForms.Guna2TextBox();
             this.lstInvestigadores = new System.Windows.Forms.CheckedListBox();
-            this.lstHoras = new System.Windows.Forms.ListBox();
             this.calendario = new System.Windows.Forms.MonthCalendar();
             this.cardFecha = new Guna.UI2.WinForms.Guna2ShadowPanel();
             this.lblTitutloFecha = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.cardHoras = new Guna.UI2.WinForms.Guna2ShadowPanel();
+            this.dtpHoraFin = new System.Windows.Forms.DateTimePicker();
+            this.dtpHoraInicio = new System.Windows.Forms.DateTimePicker();
             this.lblHoraFin = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.lblhorainicio = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.lblHorasDisponibles = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -53,7 +54,6 @@
             this.lblInvestigador = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.cardMotivo = new Guna.UI2.WinForms.Guna2ShadowPanel();
             this.lblMotivo = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.lstHoraFin = new System.Windows.Forms.ListBox();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).BeginInit();
             this.cardFecha.SuspendLayout();
@@ -229,17 +229,6 @@
             this.lstInvestigadores.Size = new System.Drawing.Size(269, 188);
             this.lstInvestigadores.TabIndex = 0;
             // 
-            // lstHoras
-            // 
-            this.lstHoras.FormattingEnabled = true;
-            this.lstHoras.ItemHeight = 20;
-            this.lstHoras.Location = new System.Drawing.Point(19, 88);
-            this.lstHoras.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.lstHoras.Name = "lstHoras";
-            this.lstHoras.Size = new System.Drawing.Size(123, 204);
-            this.lstHoras.TabIndex = 0;
-            this.lstHoras.SelectedIndexChanged += new System.EventHandler(this.lstHoras_SelectedIndexChanged);
-            // 
             // calendario
             // 
             this.calendario.Location = new System.Drawing.Point(18, 64);
@@ -273,17 +262,39 @@
             // cardHoras
             // 
             this.cardHoras.BackColor = System.Drawing.Color.Transparent;
-            this.cardHoras.Controls.Add(this.lstHoraFin);
+            this.cardHoras.Controls.Add(this.dtpHoraFin);
+            this.cardHoras.Controls.Add(this.dtpHoraInicio);
             this.cardHoras.Controls.Add(this.lblHoraFin);
             this.cardHoras.Controls.Add(this.lblhorainicio);
             this.cardHoras.Controls.Add(this.lblHorasDisponibles);
-            this.cardHoras.Controls.Add(this.lstHoras);
             this.cardHoras.FillColor = System.Drawing.Color.White;
             this.cardHoras.Location = new System.Drawing.Point(557, 84);
             this.cardHoras.Name = "cardHoras";
             this.cardHoras.ShadowColor = System.Drawing.Color.Black;
             this.cardHoras.Size = new System.Drawing.Size(313, 302);
             this.cardHoras.TabIndex = 11;
+            // 
+            // dtpHoraFin
+            // 
+            this.dtpHoraFin.CustomFormat = "HH:mm";
+            this.dtpHoraFin.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpHoraFin.Location = new System.Drawing.Point(187, 88);
+            this.dtpHoraFin.Name = "dtpHoraFin";
+            this.dtpHoraFin.ShowUpDown = true;
+            this.dtpHoraFin.Size = new System.Drawing.Size(82, 26);
+            this.dtpHoraFin.TabIndex = 7;
+            this.dtpHoraFin.ValueChanged += new System.EventHandler(this.dtpHoraFin_ValueChanged);
+            // 
+            // dtpHoraInicio
+            // 
+            this.dtpHoraInicio.CustomFormat = "HH:mm";
+            this.dtpHoraInicio.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpHoraInicio.Location = new System.Drawing.Point(38, 89);
+            this.dtpHoraInicio.Name = "dtpHoraInicio";
+            this.dtpHoraInicio.ShowUpDown = true;
+            this.dtpHoraInicio.Size = new System.Drawing.Size(82, 26);
+            this.dtpHoraInicio.TabIndex = 6;
+            this.dtpHoraInicio.ValueChanged += new System.EventHandler(this.dtpHoraInicio_ValueChanged);
             // 
             // lblHoraFin
             // 
@@ -360,16 +371,6 @@
             this.lblMotivo.TabIndex = 2;
             this.lblMotivo.Text = "Motivo de reunion";
             // 
-            // lstHoraFin
-            // 
-            this.lstHoraFin.FormattingEnabled = true;
-            this.lstHoraFin.ItemHeight = 20;
-            this.lstHoraFin.Location = new System.Drawing.Point(169, 87);
-            this.lstHoraFin.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.lstHoraFin.Name = "lstHoraFin";
-            this.lstHoraFin.Size = new System.Drawing.Size(123, 204);
-            this.lstHoraFin.TabIndex = 6;
-            // 
             // FormLider
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -412,7 +413,6 @@
         private Guna.UI2.WinForms.Guna2HtmlLabel lblBienvenida;
         private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox1;
         private System.Windows.Forms.CheckedListBox lstInvestigadores;
-        private System.Windows.Forms.ListBox lstHoras;
         private System.Windows.Forms.MonthCalendar calendario;
         private Guna.UI2.WinForms.Guna2TextBox txtMotivo;
         private Guna.UI2.WinForms.Guna2Button btnGuardar;
@@ -430,6 +430,7 @@
         private Guna.UI2.WinForms.Guna2HtmlLabel lblHorasDisponibles;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblHoraFin;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblhorainicio;
-        private System.Windows.Forms.ListBox lstHoraFin;
+        private System.Windows.Forms.DateTimePicker dtpHoraFin;
+        private System.Windows.Forms.DateTimePicker dtpHoraInicio;
     }
 }
